@@ -20,9 +20,15 @@ public class GravityAffectedScript : MonoBehaviour
     {
         if (GravityOn)
         {
-            Vector3 dir = OriginGForce.position - transform.position;
-            transform.up = dir;
-            transform.position -= dir.normalized * gSpeed * Time.deltaTime;
+            Vector3 direction = GetDir();
+            transform.up = direction;
+            transform.position -= direction.normalized * gSpeed * Time.deltaTime;
         }
+    }
+
+    public Vector3 GetDir()
+    {
+        Vector3 dir;
+        return dir = OriginGForce.position - transform.position;
     }
 }
