@@ -20,11 +20,11 @@ public class PlayerInput : MonoBehaviour
 
         //MOVEMENT
         transform.position += transform.right * Fwd * Speed * Time.deltaTime;
-
+        Debug.DrawRay(transform.position, GScript.GetDir().normalized*10,Color.red);
         if (Input.GetKey(KeyCode.Space))
         {
             //VALUTARE SE MIGLIORARE LA QUESTIONE DIRECTION
-            Vector3 dir = GScript.GetDir();
+            Vector3 dir = GScript.GetDir().normalized;
             //esegue il jump usando dir.
             transform.position += JumpForce * dir * Time.deltaTime;
         }

@@ -13,16 +13,18 @@ public class GravityAffectedScript : MonoBehaviour
     void Start()
     {
         gSpeed = Mgr.GValue;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+ 
 
         if (GravityOn)
         {
             Vector3 direction = GetDir();
-            transform.up = direction;
+            transform.forward = direction.normalized;
             transform.position -= direction.normalized * gSpeed * Time.deltaTime;
         }
     }
