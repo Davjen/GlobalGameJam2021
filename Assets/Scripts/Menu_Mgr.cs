@@ -14,6 +14,7 @@ public class Menu_Mgr : MonoBehaviour
     }
     public void AudioOn()
     {
+        //wait for end animation
         AnimatorStateInfo animInfo = anim.GetCurrentAnimatorStateInfo(0);
         if (!Audio_On && animInfo.IsName("IDLE"))
         {
@@ -24,8 +25,8 @@ public class Menu_Mgr : MonoBehaviour
     }
     public void AudioOff()
     {
+        //wait for end animation
         AnimatorStateInfo animInfo = anim.GetCurrentAnimatorStateInfo(0);
-
         if (Audio_On && animInfo.IsName("IDLE"))
         {
             Audio_On = false;

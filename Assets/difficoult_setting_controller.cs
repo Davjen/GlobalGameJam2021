@@ -15,7 +15,7 @@ public class difficoult_setting_controller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        tgtRot = diff1;
+        tgtRot = diff3;
         currDiff = 1;
     }
     public void setDiff_1()
