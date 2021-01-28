@@ -30,13 +30,12 @@ public class Menu_Mgr : MonoBehaviour
         {
             Audio_On = false;
             anim.SetTrigger("off");
-
+            
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
     }
 }
