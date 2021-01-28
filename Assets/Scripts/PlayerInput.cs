@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
-    public float Fwd,Speed, JumpForce;
+    public float Speed, JumpForce;
     public GravityAffectedScript GScript;
+    private float Fwd;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,7 +16,7 @@ public class PlayerInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //PER FUNZIONARE IL FORWARD DEVE ESSERE RIVOLTO VERSO L'ORIGINE DELLA GRAVITà.
         Fwd = Input.GetAxis("Horizontal") * Speed;
 
         //MOVEMENT

@@ -23,21 +23,30 @@ public class WashingMachineMgr : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Tick();
+        //il tick parte solo se triggerato il ccomando. //GESTIRE BENE I BOOL
 
-        if (ApplyGAll)//QUANDO IL PLAYER TRIGGERA IL CENTRO PER FAR FERMARE LA CENTRIFUGA
+        /*
+         if(STOPTRIGGER)//le pedane cadono
         {
-            //LE PEDANE CADONO
-            ActivateGForce();
-            ApplyGAll = false;
+        IF(ONETIMEONLY)//PER EVITARE INUTILI CICLI FOR
+        {
+        ActivateGForce();
         }
 
-        if (centrifugaTimer <= 0) //Ci sarà il Timer
+        Tick();
+        }
+        */
+
+
+
+        if (centrifugaTimer <= 0) //scade IL TEMPO DELLA CENTRIFUGA FERMA.
         {
+            //ApplyGAll = false;
             ResetTimer();
             //in tutti gli altri casi spegne la gravità alle pedane tranne che al player.
-            DeactivateGForce();
-            RemoveGForce = false;
+            DeactivateGForcePlatforms();
+            //RIPOSIZIONARE LE PIATTAFORME ALLE POSIZIONI STABILITE.
+            
         }
     }
 
@@ -61,12 +70,12 @@ public class WashingMachineMgr : MonoBehaviour
         centrifugaTimer -= Time.deltaTime;
     }
 
-    void SetCentrifugaTimer(float timerInMin)//VERRà SETTATO TRAMITE INVOCAZIONE EVENTO
+    void SetCentrifugaTimer(float timer)//VERRà SETTATO TRAMITE INVOCAZIONE EVENTO
     {
-        centrifugaTimer = timerInMin * 60;
-        storedTimerValue = timerInMin * 60;
+        centrifugaTimer = timer;
+        storedTimerValue = timer;
     }
-    void DeactivateGForce()
+    void DeactivateGForcePlatforms()
     {
         for (int i = 0; i < GAffectedObj.Count; i++)
         {
