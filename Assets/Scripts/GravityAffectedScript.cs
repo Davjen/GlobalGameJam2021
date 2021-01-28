@@ -18,6 +18,7 @@ public class GravityAffectedScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (GravityOn)
         {
             Vector3 direction = GetDir();
