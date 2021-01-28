@@ -21,7 +21,7 @@ public class PlayerInput : MonoBehaviour
 
         //MOVEMENT
         transform.position += transform.right * Fwd * Speed * Time.deltaTime;
-        Debug.DrawRay(transform.position, GScript.GetDir().normalized*10,Color.red);
+        //Debug.DrawRay(transform.position, GScript.GetDir().normalized*10,Color.red);
         if (Input.GetKey(KeyCode.Space))
         {
             //VALUTARE SE MIGLIORARE LA QUESTIONE DIRECTION
