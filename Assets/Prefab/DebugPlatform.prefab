@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6317791303329124400}
   - component: {fileID: 4108414121170475714}
   - component: {fileID: 571298351818954127}
-  - component: {fileID: 8000361691291369931}
+  - component: {fileID: 1779069819477108037}
   m_Layer: 0
   m_Name: DebugPlatform
   m_TagString: Untagged
@@ -96,7 +96,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &8000361691291369931
+--- !u!65 &1779069819477108037
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,5 +107,5 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.99913394, z: 1.1541147}
-  m_Center: {x: 0, y: -0.00043302774, z: 0.07705742}
+  m_Size: {x: 1, y: 1, z: 1.344879}
+  m_Center: {x: 0, y: 0, z: 0.17243971}

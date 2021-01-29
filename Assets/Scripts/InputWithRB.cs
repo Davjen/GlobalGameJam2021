@@ -10,19 +10,22 @@ public class InputWithRB : MonoBehaviour
     public bool gravOn = true;
     public float speed;
     public float jumpForce;
-    public float RotMultiplier=1f;
+    public float FloatingMultiplier=1f;
+    public float GroundingMultiplier = 1f;
     bool jump;
-    public bool grounded;
+    bool grounded;
     float fwd;
-    public Quaternion platformRot;
-    public bool floating;
+    Quaternion platformRot;
+    CapsuleCollider collider;
+    bool floating;
 
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-
+        collider = GetComponentInChildren<CapsuleCollider>();
+       
         //Debug
         floating = true;
     }
@@ -38,16 +41,15 @@ public class InputWithRB : MonoBehaviour
             //Add orientation
             rb.rotation = Quaternion.LookRotation(dir);
         }
-       
+
         //add translation
         rb.AddForce(transform.right * fwd);
 
-
         if (!floating)
-            rb.rotation = Quaternion.Slerp(transform.rotation, platformRot, Time.deltaTime * RotMultiplier).normalized;
+            rb.rotation = Quaternion.Slerp(transform.rotation, platformRot, Time.deltaTime * GroundingMultiplier).normalized;
 
         if (!grounded && floating)
-            rb.rotation = Quaternion.Slerp(transform.rotation, platformRot, Time.deltaTime * RotMultiplier).normalized;
+            rb.rotation = Quaternion.Slerp(transform.rotation, platformRot, Time.deltaTime * FloatingMultiplier).normalized;
 
 
         //add jump force
@@ -65,7 +67,7 @@ public class InputWithRB : MonoBehaviour
     private void Update()
     {
 
-        fwd = Input.GetAxis("Horizontal")*speed*Time.deltaTime;
+        fwd = Input.GetAxis("Horizontal")*speed;
 
 
         if (Input.GetKeyDown(KeyCode.Space) && grounded)
@@ -78,32 +80,90 @@ public class InputWithRB : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        //rb.velocity = Vector3.zero;
-        gravOn = false;
-        grounded = true;
 
-        //transform.SetParent(collision.transform);
+        float myDist = (center.position - transform.position).magnitude;
+        float platformDist = (center.position - collision.transform.position).magnitude;
+
+        if ((myDist + collider.bounds.extents.z <= platformDist - collision.collider.bounds.extents.z) || collision.gameObject.tag == "WashingMachine")
+        {
+            transform.SetParent(collision.transform);
+            gravOn = false;
+            grounded = true;
+
+            if (collision.gameObject.tag == "WashingMachine")
+            {
+                floating = false;
+                LookCenter();
+            }
+
+
+        }
+        //rb.velocity = Vector3.zero;
+
+        //if (collision.gameObject.tag == "WashingMachine")
+        //{
+        //    floating = false;
+        //    Vector3 dir = (center.position - transform.position).normalized;
+        //    platformRot = Quaternion.FromToRotation(transform.forward, dir);
+
+        //}
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
+       
+
+
         floating = false;
         platformRot = Quaternion.LookRotation(other.transform.forward);
 
+
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        float myDist = (center.position - transform.position).magnitude;
+        float platformDist = (center.position - collision.transform.position).magnitude;
+
+        //N.B. useful if you don't wanna jump again when you touch a platform from edges
+        if ((myDist + 0.4f >= platformDist - collision.collider.bounds.extents.z) && collision.gameObject.tag != "WashingMachine" && collision.transform!=transform.parent)
+            grounded = false;
+        else
+        {
+            grounded = true;
+
+            if (collision.gameObject.tag == "WashingMachine")
+                LookCenter();
+
+        }
+
+        
     }
 
     private void OnTriggerExit(Collider other)
     {
            floating = true;
-            Vector3 dir = (center.position - transform.position).normalized;
-            platformRot = Quaternion.LookRotation(dir);
+            LookCenter();
     }
     private void OnCollisionExit(Collision collision)
     {
+        transform.SetParent(null);
         gravOn = true;
         grounded = false;
-        //platformRot = Quaternion.identity;
-        //transform.SetParent(null);
 
+        if (collision.gameObject.tag == "WashingMachine")
+        {
+            floating = true;
+            LookCenter();
+        }
+        //platformRot = Quaternion.identity;
+
+    }
+
+    public void LookCenter()
+    {
+        Vector3 dir = (center.position - transform.position).normalized;
+        platformRot = Quaternion.LookRotation(dir);
     }
 }
