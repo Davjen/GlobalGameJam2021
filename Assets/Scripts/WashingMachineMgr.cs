@@ -14,6 +14,11 @@ public class WashingMachineMgr : MonoBehaviour
 
     //TRAMITE EVENT IMPOSTA LE VELOCITà DELLE ORBITE
 
+    //AGGIUNTO DA ANDREA
+    public void InitializeGame(int diffLevel) //livello di difficoltà --Implementare Switch--
+    {
+
+    }
    
     void Start()
     {
