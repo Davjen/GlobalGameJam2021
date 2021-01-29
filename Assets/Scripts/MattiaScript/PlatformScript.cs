@@ -27,7 +27,7 @@ public class PlatformScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //orientare verso il centro!
+        
        
         if (goToDestination)
         {
