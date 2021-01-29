@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class WashingMachineMgr : MonoBehaviour
 {
-    public List<GravityAffectedScript> GAffectedObj = new List<GravityAffectedScript>();
+    public List<GravityAffectedScript> Platform = new List<GravityAffectedScript>();
     public GravityAffectedScript Player;
     public float GValue;
     public bool ApplyGAll, RemoveGForce;
     public string PlayerSceneObjName;
 
-    private float centrifugaTimer, storedTimerValue;
+    private float centrifugaNotMovingTimer, storedTimerValue;
 
     //TRAMITE EVENT IMPOSTA LE VELOCITà DELLE ORBITE
 
@@ -39,7 +39,7 @@ public class WashingMachineMgr : MonoBehaviour
 
 
 
-        if (centrifugaTimer <= 0) //scade IL TEMPO DELLA CENTRIFUGA FERMA.
+        if (centrifugaNotMovingTimer <= 0) //scade IL TEMPO DELLA CENTRIFUGA FERMA.
         {
             //ApplyGAll = false;
             ResetTimer();
@@ -49,39 +49,54 @@ public class WashingMachineMgr : MonoBehaviour
             
         }
     }
+    void PlatformComeBackAtPosition()
+    {
+        for (int i = 0; i < Platform.Count; i++)
+        {
 
+            // opzione 1 -> Platform[i]."ComeBack (Bool)" = true; -> nell'update delle piattaforme ci sara' un check e torneranno al loro posto
+            // opzione 1.5 -> Platform[i].MoveTo(position) (metodo con argomento destinazione dove la piattaforma deve andare
+            //NB: quando le piattaforme si riposizionano devono avere il collider disattivato perche' potrebbero collidere fra di loro.
+
+            // opzione 2 -> Invoke(position) - unity event 
+
+            //-- nell'update della piattaforma ci sara' il lerp che lo portera' a destinazione
+        }
+    }
     void ActivateGForce()
     {
-        for (int i = 0; i < GAffectedObj.Count; i++)
+        for (int i = 0; i < Platform.Count; i++)
         {
-            if (!GAffectedObj[i].GravityOn)
+            if (!Platform[i].GravityOn)
             {
-                GAffectedObj[i].GravityOn = true;
+                Platform[i].GravityOn = true;
             }
         }
     }
     void ResetTimer()
     {
-        if (centrifugaTimer > 0)
-            centrifugaTimer = storedTimerValue;
+        if (centrifugaNotMovingTimer > 0)
+            centrifugaNotMovingTimer = storedTimerValue;
     }
     void Tick()
     {
-        centrifugaTimer -= Time.deltaTime;
+        centrifugaNotMovingTimer -= Time.deltaTime;
     }
 
-    void SetCentrifugaTimer(float timer)//VERRà SETTATO TRAMITE INVOCAZIONE EVENTO
+    void SetCentrifugaNotMovingTimer(float timer)//VERRà SETTATO TRAMITE INVOCAZIONE EVENTO
     {
-        centrifugaTimer = timer;
+        centrifugaNotMovingTimer = timer;
         storedTimerValue = timer;
     }
     void DeactivateGForcePlatforms()
     {
-        for (int i = 0; i < GAffectedObj.Count; i++)
+        for (int i = 0; i < Platform.Count; i++)
         {
-            if (GAffectedObj[i].GravityOn && GAffectedObj[i].name != PlayerSceneObjName)
+            if (Platform[i].GravityOn)
             {
-                GAffectedObj[i].GravityOn = false;
+                //si deve disattivare il collider mentre cadono!
+                //devono passare dietro il player cosi' da evitare sovrapposizioni e che il player si incastri.(layer/ foreground/spostare la Z)
+                Platform[i].GravityOn = false;
             }
         }
     }
