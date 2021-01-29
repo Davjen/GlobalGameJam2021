@@ -16,6 +16,8 @@ public class GravityAffectedScript : MonoBehaviour
         
     }
 
+
+
     // Update is called once per frame
     void Update()
     {
@@ -23,8 +25,8 @@ public class GravityAffectedScript : MonoBehaviour
 
         if (GravityOn)
         {
-            Vector3 direction = GetDir();
-            transform.forward = direction.normalized;
+            Vector3 direction = OriginGForce.position - transform.position;
+            
             transform.position -= direction.normalized * gSpeed * Time.deltaTime;
         }
     }

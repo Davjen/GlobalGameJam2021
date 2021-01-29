@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class tryGrav : MonoBehaviour
+public class InputWithRB : MonoBehaviour
 {
     private Rigidbody rb;
     public Transform center;
@@ -10,10 +10,21 @@ public class tryGrav : MonoBehaviour
     public bool gravOn = true;
     public float speed;
     public float jumpForce;
+    public float RotMultiplier=1f;
+    bool jump;
+    public bool grounded;
+    float fwd;
+    public Quaternion platformRot;
+    public bool floating;
+
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
+        //Debug
+        floating = true;
     }
     // Update is called once per frame
     void FixedUpdate()
@@ -21,27 +32,78 @@ public class tryGrav : MonoBehaviour
         Vector3 dir = (center.position - transform.position).normalized;
         if (gravOn)
         {
+            //Add Gravity
             rb.AddForce(-dir * grav, ForceMode.Acceleration);
+
+            //Add orientation
+            rb.rotation = Quaternion.LookRotation(dir);
         }
-        float x = Input.GetAxis("Horizontal");
-        rb.AddForce(transform.right * x * speed);
+       
+        //add translation
+        rb.AddForce(transform.right * fwd);
 
-        transform.rotation = Quaternion.LookRotation(dir);
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (!floating)
+            rb.rotation = Quaternion.Slerp(transform.rotation, platformRot, Time.deltaTime * RotMultiplier).normalized;
+
+        if (!grounded && floating)
+            rb.rotation = Quaternion.Slerp(transform.rotation, platformRot, Time.deltaTime * RotMultiplier).normalized;
+
+
+        //add jump force
+        if (jump && grounded)
         {
+
             rb.AddForce(dir * jumpForce, ForceMode.Impulse);
+            jump = false;
         }
-        
+
+
 
     }
+
+    private void Update()
+    {
+
+        fwd = Input.GetAxis("Horizontal")*speed*Time.deltaTime;
+
+
+        if (Input.GetKeyDown(KeyCode.Space) && grounded)
+            jump = true;
+
+        //Allining with platform
+       
+
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
-        rb.velocity = Vector3.zero;
+        //rb.velocity = Vector3.zero;
         gravOn = false;
+        grounded = true;
+
+        //transform.SetParent(collision.transform);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        floating = false;
+        platformRot = Quaternion.LookRotation(other.transform.forward);
+
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+           floating = true;
+            Vector3 dir = (center.position - transform.position).normalized;
+            platformRot = Quaternion.LookRotation(dir);
     }
     private void OnCollisionExit(Collision collision)
     {
         gravOn = true;
+        grounded = false;
+        //platformRot = Quaternion.identity;
+        //transform.SetParent(null);
+
     }
 }
