@@ -4,12 +4,24 @@ using UnityEngine;
 
 public class Menu_Mgr : MonoBehaviour
 {
+    //Animazione Bottoni
     public Animator anim;
     private bool Audio_On = true;
     private int IDLE_Hashe;
+
+    //Animazione Camera
+    private bool startCameraAnim = false;
+    private Transform camera;
+    public Transform tgtCamera;
+    public float speed = 10f;
+
+    public int level = 1;
+    public WashingMachineMgr MachineMgr;
+
     // Start is called before the first frame update
     void Start()
     {
+        camera = Camera.main.transform;
         IDLE_Hashe = Animator.StringToHash("IDLE");
     }
     public void AudioOn()
@@ -34,9 +46,20 @@ public class Menu_Mgr : MonoBehaviour
             
         }
     }
+    public void StartGame()
+    {
+        //MachineMgr.InitializeGame(level);
+        Debug.Log(level);
+        startCameraAnim = true;
+    }
 
     // Update is called once per frame
     void Update()
     {
+        if (startCameraAnim)
+        {
+            camera.position = Vector3.Lerp(camera.position, tgtCamera.position, speed * Time.deltaTime);
+            camera.rotation = Quaternion.Lerp(camera.rotation, tgtCamera.rotation, speed * Time.deltaTime);
+        }
     }
 }
