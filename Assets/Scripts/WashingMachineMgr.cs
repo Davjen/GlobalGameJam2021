@@ -14,13 +14,13 @@ public class WashingMachineMgr : MonoBehaviour
 
     //TRAMITE EVENT IMPOSTA LE VELOCITà DELLE ORBITE
 
-    // Start is called before the first frame update
+   
     void Start()
     {
         Player.GravityOn = true;
     }
 
-    // Update is called once per frame
+   
     void Update()
     {
         //il tick parte solo se triggerato il ccomando. //GESTIRE BENE I BOOL

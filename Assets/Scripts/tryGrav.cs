@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputWithRB : MonoBehaviour
+public class tryGrav : MonoBehaviour
 {
     private Rigidbody rb;
     public Transform center;
