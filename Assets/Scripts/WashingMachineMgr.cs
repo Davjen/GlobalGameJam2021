@@ -70,7 +70,7 @@ public class WashingMachineMgr : MonoBehaviour
 
 
                     //RIPOSIZIONARE LE PIATTAFORME ALLE POSIZIONI STABILITE.
-                    SendPositionEvent.Invoke(positions);
+                    //SendPositionEvent.Invoke(positions);
                     //SPENGO LA GRAVITà ALLE PIATTAFORME
                     GPlatformsEvent.Invoke(false);
 
