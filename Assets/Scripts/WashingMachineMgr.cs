@@ -1,26 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
+[SerializeField]
+public class ActivatePlatformsEvent : UnityEvent<bool> { }
+public class SetPlatformPosition : UnityEvent<Vector3> { }
 public class WashingMachineMgr : MonoBehaviour
 {
-    public List<GravityAffectedScript> Platform = new List<GravityAffectedScript>();
-    public GravityAffectedScript Player;
+
+    public List<PlatformScript> Platform = new List<PlatformScript>();
+    public List<Transform> Orbits;
+
     public float GValue;
     public bool ApplyGAll, RemoveGForce;
     public string PlayerSceneObjName;
-
+    public ActivatePlatformsEvent GPlatformsEvent;
+    public SetPlatformPosition SendPositionEvent;
     private float centrifugaNotMovingTimer, storedTimerValue;
+    private float rotationSpeed;
+    private bool startGame;
+    bool stopMotionTrigger;
 
+    List<Vector3> positionList = new List<Vector3>();
+    List<Vector3> UsedPositions = new List<Vector3>();
     //TRAMITE EVENT IMPOSTA LE VELOCITà DELLE ORBITE
 
-   
-    void Start()
+
+    public void InitializeGame(int diffLevel) //livello di difficoltà --Implementare Switch--
     {
-        Player.GravityOn = true;
+        //alla fine di tutto
+        startGame = true;
     }
 
-   
+    void Start()
+    {
+        //RIEMPIRE LA LISTA DI USABLE positionList
+    }
+
+
     void Update()
     {
         //il tick parte solo se triggerato il ccomando. //GESTIRE BENE I BOOL
@@ -36,17 +54,28 @@ public class WashingMachineMgr : MonoBehaviour
         Tick();
         }
         */
-
-
-
-        if (centrifugaNotMovingTimer <= 0) //scade IL TEMPO DELLA CENTRIFUGA FERMA.
+        if (startGame)
         {
-            //ApplyGAll = false;
-            ResetTimer();
-            //in tutti gli altri casi spegne la gravità alle pedane tranne che al player.
-            DeactivateGForcePlatforms();
-            //RIPOSIZIONARE LE PIATTAFORME ALLE POSIZIONI STABILITE.
-            
+            if (stopMotionTrigger)//QUANDO IL PLAYER RAGGIUNGE IL CENTRO DELLA LAVATRICE E TRIGGERA LO STOP
+            {
+                //FAI CADERE LE PIATTAFORME.
+                GPlatformsEvent.Invoke(true);
+                Tick();
+
+                if (TimeIsOver()) //scade IL TEMPO DELLA CENTRIFUGA FERMA.
+                {
+                    //ApplyGAll = false;
+                    ResetTimer();
+
+
+
+                    //RIPOSIZIONARE LE PIATTAFORME ALLE POSIZIONI STABILITE.
+                    SendPositionEvent.Invoke(positions);
+                    //SPENGO LA GRAVITà ALLE PIATTAFORME
+                    GPlatformsEvent.Invoke(false);
+
+                }
+            }
         }
     }
     void PlatformComeBackAtPosition()
@@ -63,24 +92,28 @@ public class WashingMachineMgr : MonoBehaviour
             //-- nell'update della piattaforma ci sara' il lerp che lo portera' a destinazione
         }
     }
-    void ActivateGForce()
+
+    void SendPositions()
     {
-        for (int i = 0; i < Platform.Count; i++)
+        for (int i = 0; i < 3; i++)
         {
-            if (!Platform[i].GravityOn)
-            {
-                Platform[i].GravityOn = true;
-            }
+            int rndPosIndex = Random.Range(0, positionList.Count - 1);
+
         }
     }
+
     void ResetTimer()
     {
-        if (centrifugaNotMovingTimer > 0)
+        if (centrifugaNotMovingTimer >= 0)
             centrifugaNotMovingTimer = storedTimerValue;
     }
     void Tick()
     {
         centrifugaNotMovingTimer -= Time.deltaTime;
+    }
+    bool TimeIsOver()
+    {
+        return centrifugaNotMovingTimer <= 0;
     }
 
     void SetCentrifugaNotMovingTimer(float timer)//VERRà SETTATO TRAMITE INVOCAZIONE EVENTO
@@ -88,16 +121,5 @@ public class WashingMachineMgr : MonoBehaviour
         centrifugaNotMovingTimer = timer;
         storedTimerValue = timer;
     }
-    void DeactivateGForcePlatforms()
-    {
-        for (int i = 0; i < Platform.Count; i++)
-        {
-            if (Platform[i].GravityOn)
-            {
-                //si deve disattivare il collider mentre cadono!
-                //devono passare dietro il player cosi' da evitare sovrapposizioni e che il player si incastri.(layer/ foreground/spostare la Z)
-                Platform[i].GravityOn = false;
-            }
-        }
-    }
+
 }

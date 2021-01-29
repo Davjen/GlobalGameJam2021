@@ -6,15 +6,22 @@ public class PlatformScript : MonoBehaviour
 {
     public Transform origin;
     public float TimeOfPositioning;
+    WashingMachineMgr owner;
     Vector3 PlatformNewDestination;
     Vector3 PreviousPosition;
     bool goToDestination;
     Collider myCollider;
     float timer;
+    bool isGravityAffected;
     // Start is called before the first frame update
     void Start()
     {
         myCollider = transform.GetComponent<Collider>();
+    }
+
+    private void Awake()
+    {
+        owner.GPlatformsEvent.AddListener(SetGravity);
     }
 
     // Update is called once per frame
@@ -44,5 +51,9 @@ public class PlatformScript : MonoBehaviour
         PreviousPosition = transform.position;
         goToDestination = true;
 
+    }
+    public void SetGravity(bool status)
+    {
+        isGravityAffected = status;
     }
 }
