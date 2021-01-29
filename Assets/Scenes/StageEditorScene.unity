@@ -892,7 +892,8 @@ MonoBehaviour:
   gravOn: 1
   speed: 10
   jumpForce: 8
-  RotMultiplier: 5
+  FloatingMultiplier: 10
+  GroundingMultiplier: 5
 --- !u!54 &748225232
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1725,13 +1726,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1927915747}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.71792346, y: -0.18578584, z: 0.20925565, w: 0.63740224}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 96.8, y: -32.5, z: 0}
 --- !u!1 &2000915536
 GameObject:
   m_ObjectHideFlags: 0

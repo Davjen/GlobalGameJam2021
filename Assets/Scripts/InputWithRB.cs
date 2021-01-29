@@ -10,11 +10,13 @@ public class InputWithRB : MonoBehaviour
     public bool gravOn = true;
     public float speed;
     public float jumpForce;
-    public float RotMultiplier=1f;
+    public float FloatingMultiplier=1f;
+    public float GroundingMultiplier = 1f;
     bool jump;
     bool grounded;
     float fwd;
     Quaternion platformRot;
+    CapsuleCollider collider;
     bool floating;
 
 
@@ -22,7 +24,8 @@ public class InputWithRB : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-
+        collider = GetComponentInChildren<CapsuleCollider>();
+       
         //Debug
         floating = true;
     }
@@ -43,10 +46,10 @@ public class InputWithRB : MonoBehaviour
         rb.AddForce(transform.right * fwd);
 
         if (!floating)
-            rb.rotation = Quaternion.Slerp(transform.rotation, platformRot, Time.deltaTime * RotMultiplier).normalized;
+            rb.rotation = Quaternion.Slerp(transform.rotation, platformRot, Time.deltaTime * GroundingMultiplier).normalized;
 
         if (!grounded && floating)
-            rb.rotation = Quaternion.Slerp(transform.rotation, platformRot, Time.deltaTime * RotMultiplier).normalized;
+            rb.rotation = Quaternion.Slerp(transform.rotation, platformRot, Time.deltaTime * FloatingMultiplier).normalized;
 
 
         //add jump force
@@ -81,7 +84,7 @@ public class InputWithRB : MonoBehaviour
         float myDist = (center.position - transform.position).magnitude;
         float platformDist = (center.position - collision.transform.position).magnitude;
 
-        if ((myDist + 0.5f <= platformDist - 0.5f) || collision.gameObject.tag == "WashingMachine")
+        if ((myDist + collider.bounds.extents.z <= platformDist - collision.collider.bounds.extents.z) || collision.gameObject.tag == "WashingMachine")
         {
             transform.SetParent(collision.transform);
             gravOn = false;
@@ -124,7 +127,7 @@ public class InputWithRB : MonoBehaviour
         float platformDist = (center.position - collision.transform.position).magnitude;
 
         //N.B. useful if you don't wanna jump again when you touch a platform from edges
-        if ((myDist + 0.4f >= platformDist - 0.5f) && collision.gameObject.tag != "WashingMachine" && collision.transform!=transform.parent)
+        if ((myDist + 0.4f >= platformDist - collision.collider.bounds.extents.z) && collision.gameObject.tag != "WashingMachine" && collision.transform!=transform.parent)
             grounded = false;
         else
         {
