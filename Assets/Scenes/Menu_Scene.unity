@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -97,8 +97,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 244a6f4eeac65644087e57c67ac2d6d0, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 5afc00e6e3e913d4386c319442c18446, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -456,9 +456,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1241270871}
-        m_TargetAssemblyTypeName: Menu_Mgr, Assembly-CSharp
-        m_MethodName: AudioOff
+      - m_Target: {fileID: 1902310244}
+        m_TargetAssemblyTypeName: AudioSettlerController, Assembly-CSharp
+        m_MethodName: SetAudioOff
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -501,8 +501,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   action: 1
-  tgtCamera: {fileID: 0}
-  speed: 10
+  menuMgr: {fileID: 0}
 --- !u!135 &514439985
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -795,7 +794,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &723228809
 Light:
   m_ObjectHideFlags: 0
@@ -1398,9 +1397,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1241270871}
-        m_TargetAssemblyTypeName: Menu_Mgr, Assembly-CSharp
-        m_MethodName: AudioOn
+      - m_Target: {fileID: 1902310244}
+        m_TargetAssemblyTypeName: AudioSettlerController, Assembly-CSharp
+        m_MethodName: SetAudioOn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1423,7 +1422,7 @@ GameObject:
   - component: {fileID: 1094208851}
   - component: {fileID: 1094208850}
   m_Layer: 5
-  m_Name: UI_Difficoult_3
+  m_Name: UI_Difficoult_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1446,7 +1445,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 26.35, y: 42.58}
+  m_AnchoredPosition: {x: 15.54, y: 35.79}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1094208850
@@ -1495,7 +1494,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1241270872}
         m_TargetAssemblyTypeName: difficoult_setting_controller, Assembly-CSharp
-        m_MethodName: setDiff_3
+        m_MethodName: setDiff_1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1556,7 +1555,7 @@ GameObject:
   - component: {fileID: 1097999329}
   - component: {fileID: 1097999328}
   m_Layer: 5
-  m_Name: UI_Difficoult_2
+  m_Name: UI_Difficoult_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1579,7 +1578,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 15.77, y: 35.11}
+  m_AnchoredPosition: {x: 37.08, y: 35.66}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1097999328
@@ -1628,7 +1627,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1241270872}
         m_TargetAssemblyTypeName: difficoult_setting_controller, Assembly-CSharp
-        m_MethodName: setDiff_2
+        m_MethodName: setDiff_3
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2027,7 +2026,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f83d304b34ece0941b550d1b9adbebd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 1902310244}
+  anim: {fileID: 0}
+  tgtCamera: {fileID: 1241839366}
+  speed: 10
+  level: 1
+  MachineMgr: {fileID: 0}
 --- !u!114 &1241270872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2041,10 +2044,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotSpeed: 20
-  diff1: 0
-  diff2: 180
-  diff3: 90
+  diff1: 163.295
+  diff2: 90
+  diff3: 16.709
   setting_toggle: {fileID: 2118564806}
+  menu_Mgr: {fileID: 1241270871}
 --- !u!1 &1241839365
 GameObject:
   m_ObjectHideFlags: 0
@@ -2088,7 +2092,7 @@ GameObject:
   - component: {fileID: 1309940408}
   - component: {fileID: 1309940407}
   m_Layer: 5
-  m_Name: UI_Difficoult_1
+  m_Name: UI_Difficoult_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2111,7 +2115,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 36.32, y: 35.11}
+  m_AnchoredPosition: {x: 26.29, y: 42.74}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1309940407
@@ -2160,7 +2164,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1241270872}
         m_TargetAssemblyTypeName: difficoult_setting_controller, Assembly-CSharp
-        m_MethodName: setDiff_1
+        m_MethodName: setDiff_2
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2393,8 +2397,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   action: 0
-  tgtCamera: {fileID: 1241839366}
-  speed: 2
+  menuMgr: {fileID: 1241270871}
 --- !u!1 &1603036436
 GameObject:
   m_ObjectHideFlags: 0
@@ -2598,6 +2601,49 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 713d9da679e79954687c71b31abdb8b1, type: 3}
+--- !u!1 &1713756096
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1713756098}
+  - component: {fileID: 1713756097}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1713756097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713756096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30c11af500329a44493e0277a65eb8b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1713756098
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713756096}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1724884380
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2639,23 +2685,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6196908451897904447, guid: 6dcf2950142bebe41856213ce1025c90, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.5
+      value: 0.5673444
       objectReference: {fileID: 0}
     - target: {fileID: 6196908451897904447, guid: 6dcf2950142bebe41856213ce1025c90, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.5
+      value: 0.5673445
       objectReference: {fileID: 0}
     - target: {fileID: 6196908451897904447, guid: 6dcf2950142bebe41856213ce1025c90, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.5
+      value: -0.42204297
       objectReference: {fileID: 0}
     - target: {fileID: 6196908451897904447, guid: 6dcf2950142bebe41856213ce1025c90, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.5
+      value: -0.422043
       objectReference: {fileID: 0}
     - target: {fileID: 6196908451897904447, guid: 6dcf2950142bebe41856213ce1025c90, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: 16.709
       objectReference: {fileID: 0}
     - target: {fileID: 6196908451897904447, guid: 6dcf2950142bebe41856213ce1025c90, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -2664,6 +2710,10 @@ PrefabInstance:
     - target: {fileID: 6196908451897904447, guid: 6dcf2950142bebe41856213ce1025c90, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 6196908453795523549, guid: 6dcf2950142bebe41856213ce1025c90, type: 3}
+      propertyPath: m_Name
+      value: diff_selector
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6dcf2950142bebe41856213ce1025c90, type: 3}
@@ -2808,25 +2858,21 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6196908451897904387, guid: 6dcf2950142bebe41856213ce1025c90, type: 3}
   m_PrefabInstance: {fileID: 6196908453787565660}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &1902310244
-Animator:
-  serializedVersion: 3
+--- !u!114 &1902310244
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1902310239}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: cbe5d35e48fd45f41badb30d79deaead, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4d84979229fce4382140f35c915eda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 20
+  onAngle: -30.184
+  offAngle: 36.094
 --- !u!4 &2118564806 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6196908451897904447, guid: 6dcf2950142bebe41856213ce1025c90, type: 3}
@@ -2873,23 +2919,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6196908451897904447, guid: 6dcf2950142bebe41856213ce1025c90, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.3525697
+      value: 0.63029927
       objectReference: {fileID: 0}
     - target: {fileID: 6196908451897904447, guid: 6dcf2950142bebe41856213ce1025c90, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.3525697
+      value: 0.6302992
       objectReference: {fileID: 0}
     - target: {fileID: 6196908451897904447, guid: 6dcf2950142bebe41856213ce1025c90, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.6129393
+      value: -0.32050416
       objectReference: {fileID: 0}
     - target: {fileID: 6196908451897904447, guid: 6dcf2950142bebe41856213ce1025c90, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.6129393
+      value: -0.3205042
       objectReference: {fileID: 0}
     - target: {fileID: 6196908451897904447, guid: 6dcf2950142bebe41856213ce1025c90, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -30.184
+      value: 36.094
       objectReference: {fileID: 0}
     - target: {fileID: 6196908451897904447, guid: 6dcf2950142bebe41856213ce1025c90, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y

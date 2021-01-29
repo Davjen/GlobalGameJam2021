@@ -16,7 +16,8 @@ public class AudioSettlerController : MonoBehaviour
     }
     public void SetAudioOn()
     {
-        angleTgt = onAngle;
+        angleTgt = onAngle;    //Aggiungere Rimozione e Attivazione suoni
+        
     }
     public void SetAudioOff()
     {

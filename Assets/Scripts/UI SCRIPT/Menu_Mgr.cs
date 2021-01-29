@@ -15,6 +15,9 @@ public class Menu_Mgr : MonoBehaviour
     public Transform tgtCamera;
     public float speed = 10f;
 
+    public int level = 1;
+    public WashingMachineMgr MachineMgr;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -45,6 +48,8 @@ public class Menu_Mgr : MonoBehaviour
     }
     public void StartGame()
     {
+        //MachineMgr.InitializeGame(level);
+        Debug.Log(level);
         startCameraAnim = true;
     }
 
