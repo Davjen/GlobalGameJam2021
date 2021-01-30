@@ -16,15 +16,16 @@ public class InputWithRB : MonoBehaviour
     bool grounded;
     float fwd;
     Quaternion platformRot;
-    CapsuleCollider collider;
+    float colliderSize;
     bool floating;
-
+    Vector3 startScale;
 
     // Start is called before the first frame update
     void Start()
     {
+        startScale = transform.localScale;
         rb = GetComponent<Rigidbody>();
-        collider = GetComponentInChildren<CapsuleCollider>();
+        colliderSize = GetComponentInChildren<CapsuleCollider>().bounds.extents.z;
        
         //Debug
         floating = true;
@@ -32,35 +33,38 @@ public class InputWithRB : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 dir = (center.position - transform.position).normalized;
-        if (gravOn)
-        {
-            //Add Gravity
-            rb.AddForce(-dir * grav, ForceMode.Acceleration);
-
-            //Add orientation
-            rb.rotation = Quaternion.LookRotation(dir);
-        }
-
-        //add translation
-        rb.AddForce(transform.right * fwd);
-
-        if (!floating)
-            rb.rotation = Quaternion.Slerp(transform.rotation, platformRot, Time.deltaTime * GroundingMultiplier).normalized;
-
-        if (!grounded && floating)
-            rb.rotation = Quaternion.Slerp(transform.rotation, platformRot, Time.deltaTime * FloatingMultiplier).normalized;
+        
 
 
-        //add jump force
-        if (jump && grounded)
-        {
+            Vector3 dir = (center.position - transform.position).normalized;
+            if (gravOn)
+            {
+                //Add Gravity
+                rb.AddForce(-dir * grav, ForceMode.Acceleration);
 
-            rb.AddForce(dir * jumpForce, ForceMode.Impulse);
-            jump = false;
-        }
+                //Add orientation
+                rb.rotation = Quaternion.LookRotation(dir);
+            }
+
+            //add translation
+            rb.AddForce(transform.right * fwd);
+
+            if (!floating)
+                rb.rotation = Quaternion.Slerp(transform.rotation, platformRot, Time.deltaTime * GroundingMultiplier).normalized;
+
+            if (!grounded && floating)
+                rb.rotation = Quaternion.Slerp(transform.rotation, platformRot, Time.deltaTime * FloatingMultiplier).normalized;
 
 
+            //add jump force
+            if (jump && grounded)
+            {
+
+                rb.AddForce(dir * jumpForce, ForceMode.Impulse);
+                jump = false;
+            }
+
+        
 
     }
 
@@ -82,11 +86,17 @@ public class InputWithRB : MonoBehaviour
     {
 
         float myDist = (center.position - transform.position).magnitude;
-        float platformDist = (center.position - collision.transform.position).magnitude;
-
-        if ((myDist + collider.bounds.extents.z <= platformDist - collision.collider.bounds.extents.z) || collision.gameObject.tag == "WashingMachine")
+        float platformDist = 0;
+        if (collision.transform.childCount!=0)
         {
-            transform.SetParent(collision.transform);
+            platformDist = (center.position - collision.transform.GetChild(0).position).magnitude;
+
+        }
+
+        Debug.Log(platformDist);
+        if ((myDist + colliderSize-0.1f <= platformDist) || collision.gameObject.tag == "WashingMachine")
+        {
+           // transform.SetParent(collision.transform);
             gravOn = false;
             grounded = true;
 
@@ -124,20 +134,31 @@ public class InputWithRB : MonoBehaviour
     private void OnCollisionStay(Collision collision)
     {
         float myDist = (center.position - transform.position).magnitude;
-        float platformDist = (center.position - collision.transform.position).magnitude;
 
-        //N.B. useful if you don't wanna jump again when you touch a platform from edges
-        if ((myDist + 0.4f >= platformDist - collision.collider.bounds.extents.z) && collision.gameObject.tag != "WashingMachine" && collision.transform!=transform.parent)
-            grounded = false;
-        else
+        float platformDist=0;
+        if (collision.transform.childCount!=0)
         {
-            grounded = true;
-
-            if (collision.gameObject.tag == "WashingMachine")
-                LookCenter();
+            platformDist = (center.position - collision.transform.GetChild(0).position).magnitude;
 
         }
+        Debug.Log(platformDist);
 
+        PlatformColliderSize platformSize;
+        collision.gameObject.TryGetComponent<PlatformColliderSize>(out platformSize);
+
+
+            //N.B. useful if you don't wanna jump again when you touch a platform from edges
+            if(collision.gameObject.tag != "WashingMachine" && collision.transform != transform.parent && (myDist + colliderSize - 0.1f >= platformDist))
+                grounded = false;
+            else
+            {
+                grounded = true;
+
+                if (collision.gameObject.tag == "WashingMachine")
+                    LookCenter();
+
+            }
+        
         
     }
 
@@ -148,7 +169,8 @@ public class InputWithRB : MonoBehaviour
     }
     private void OnCollisionExit(Collision collision)
     {
-        transform.SetParent(null);
+        //transform.SetParent(null);
+        //transform.localScale = startScale;
         gravOn = true;
         grounded = false;
 
