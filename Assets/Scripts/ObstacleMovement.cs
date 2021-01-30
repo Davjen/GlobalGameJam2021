@@ -16,6 +16,8 @@ public class ObstacleMovement : MonoBehaviour
     private Vector3 rotationAxis;
     private Vector3 bounceModeDirection;
     private float angle =0;
+    private Vector3 dirFromTop;
+    private bool canUpdateFromTop;
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +36,9 @@ public class ObstacleMovement : MonoBehaviour
                 break;
             case MovementType.FromTop:
                 update = UpdateFromTop;
+                collisionMethod = CollisionFromTop;
+                dirFromTop = transform.forward;
+                canUpdateFromTop = true;
                 break;
             default:
                 break;
@@ -84,14 +89,24 @@ public class ObstacleMovement : MonoBehaviour
         newDir.Normalize();
         bounceModeDirection = new Vector3(newDir.x, 0, newDir.z);
     }
+    void CollisionFromTop(Collision collision)
+    {
+        canUpdateFromTop = false;
+    }
     private void OnCollisionEnter(Collision collision)
     {
+        Destroy(rb);
         collisionMethod(collision);
     }
 
     void UpdateFromTop()
     {
-
+        if (canUpdateFromTop)
+        {
+            transform.position += dirFromTop * 50 * Time.deltaTime;
+            LookUp();
+            Autorotate();
+        }
     }
 
     // Update is called once per frame
