@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+public enum Level { Easy,Medium,Hard}
 [SerializeField]
 public class ActivatePlatformsEvent : UnityEvent<bool> { }
 public class SetPlatformPosition : UnityEvent<Vector3> { }
@@ -17,18 +18,41 @@ public class WashingMachineMgr : MonoBehaviour
     public string PlayerSceneObjName;
     public ActivatePlatformsEvent GPlatformsEvent;
     public SetPlatformPosition SendPositionEvent;
-    private float centrifugaNotMovingTimer, storedTimerValue;
+    private float centrifugaNotMovingTimer;
     private float rotationSpeed;
     private bool startGame;
     bool stopMotionTrigger;
 
     List<Vector3> positionList = new List<Vector3>();
+    private float centrifugaNotMovingTimerValue;
+    private float gameTimeLenghtValue;
+
+
+
     //TRAMITE EVENT IMPOSTA LE VELOCITà DELLE ORBITE
 
 
     public void InitializeGame(int diffLevel) //livello di difficoltà --Implementare Switch--
     {
         //alla fine di tutto
+        switch ((Level)diffLevel)
+        {
+            case Level.Easy:
+                centrifugaNotMovingTimerValue = 30f;
+                gameTimeLenghtValue = 180f;
+                centrifugaNotMovingTimer = centrifugaNotMovingTimerValue;
+                break;
+            case Level.Medium:
+                centrifugaNotMovingTimerValue = 20f;
+                gameTimeLenghtValue = 160f;
+                centrifugaNotMovingTimer = centrifugaNotMovingTimerValue;
+                break;
+            case Level.Hard:
+                centrifugaNotMovingTimerValue = 15f;
+                gameTimeLenghtValue = 120f;
+                centrifugaNotMovingTimer = centrifugaNotMovingTimerValue;
+                break;
+        }
         startGame = true;
     }
 
@@ -40,21 +64,16 @@ public class WashingMachineMgr : MonoBehaviour
 
     void Update()
     {
-        //il tick parte solo se triggerato il ccomando. //GESTIRE BENE I BOOL
-
-        /*
-         if(STOPTRIGGER)//le pedane cadono
-        {
-        IF(ONETIMEONLY)//PER EVITARE INUTILI CICLI FOR
-        {
-        ActivateGForce();
-        }
-
-        Tick();
-        }
-        */
+             
         if (startGame)
         {
+            TickEndGame();
+            if(EndGame())
+            {
+                //FINE DEL GIOCO.
+            }
+            //METTE IN MOTO LE PIATTAFORME
+            AutorotateOrbits();
             if (stopMotionTrigger)//QUANDO IL PLAYER RAGGIUNGE IL CENTRO DELLA LAVATRICE E TRIGGERA LO STOP
             {
                 //FAI CADERE LE PIATTAFORME.
@@ -63,36 +82,22 @@ public class WashingMachineMgr : MonoBehaviour
 
                 if (TimeIsOver()) //scade IL TEMPO DELLA CENTRIFUGA FERMA.
                 {
-                    //ApplyGAll = false;
                     ResetTimer();
-
-
-
                     //RIPOSIZIONARE LE PIATTAFORME ALLE POSIZIONI STABILITE.
-                    //SendPositionEvent.Invoke(positions);
-                    SendPositions();
-                    //SPENGO LA GRAVITà ALLE PIATTAFORME
                     GPlatformsEvent.Invoke(false);
-
+                    SendPositions();
                 }
             }
         }
     }
-    void PlatformComeBackAtPosition()
+
+    void AutorotateOrbits()
     {
-        for (int i = 0; i < Platform.Count; i++)
+        for (int i = 0; i < Orbits.Count; i++)
         {
-
-            // opzione 1 -> Platform[i]."ComeBack (Bool)" = true; -> nell'update delle piattaforme ci sara' un check e torneranno al loro posto
-            // opzione 1.5 -> Platform[i].MoveTo(position) (metodo con argomento destinazione dove la piattaforma deve andare
-            //NB: quando le piattaforme si riposizionano devono avere il collider disattivato perche' potrebbero collidere fra di loro.
-
-            // opzione 2 -> Invoke(position) - unity event 
-
-            //-- nell'update della piattaforma ci sara' il lerp che lo portera' a destinazione
+            Orbits[i].Rotate(new Vector3(0, rotationSpeed * Time.deltaTime, 0));
         }
     }
-
     void SendPositions()
     {
         int count = positionList.Count;
@@ -115,21 +120,24 @@ public class WashingMachineMgr : MonoBehaviour
     void ResetTimer()
     {
         if (centrifugaNotMovingTimer >= 0)
-            centrifugaNotMovingTimer = storedTimerValue;
+            centrifugaNotMovingTimer = centrifugaNotMovingTimerValue;
     }
     void Tick()
     {
         centrifugaNotMovingTimer -= Time.deltaTime;
+    }
+    void TickEndGame()
+    {
+        gameTimeLenghtValue -= Time.deltaTime;
     }
     bool TimeIsOver()
     {
         return centrifugaNotMovingTimer <= 0;
     }
 
-    void SetCentrifugaNotMovingTimer(float timer)//VERRà SETTATO TRAMITE INVOCAZIONE EVENTO
+    bool EndGame()
     {
-        centrifugaNotMovingTimer = timer;
-        storedTimerValue = timer;
+        return gameTimeLenghtValue <= 0;
     }
 
 }
