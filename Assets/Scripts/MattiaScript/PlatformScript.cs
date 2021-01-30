@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class PlatformScript : MonoBehaviour
 {
-    [Range (0f,10f)]
+    [Range (0f,100f)]
     public float platformGravityValue;
 
     public Transform origin;
@@ -31,8 +31,8 @@ public class PlatformScript : MonoBehaviour
 
     private void Awake()
     {
-        owner.GPlatformsEvent.AddListener(SetGravity);
-        owner.SendPositionEvent.AddListener(StoringPos);
+        //owner.GPlatformsEvent.AddListener(SetGravity);
+        //owner.SendPositionEvent.AddListener(StoringPos);
     }
 
     // Update is called once per frame
@@ -85,7 +85,13 @@ public class PlatformScript : MonoBehaviour
             SetPlatformDestination(StoredPosition[Random.Range(0, StoredPosition.Count)]);
         }
     }
-
+    private void OnCollisionStay(Collision collision)
+    {
+        Vector3 gravityDirection = transform.position - collision.transform.position;
+        //float distance = gravityDirection.magnitude; VOGLIAMO RENDERLA PROPORZIONALE ALLA DISTANZA E ALLE MASSE DEGLI OGGETTI IN GIOCO COME NELLA REALTà? m*m/r^2
+        Vector3 force = gravityDirection.normalized;
+        collision.rigidbody.AddForce(force*platformGravityValue);
+    }
     public void Attractor(Rigidbody rbToAttract)
     {
         Vector3 gravityDirection = transform.position - rbToAttract.position;
