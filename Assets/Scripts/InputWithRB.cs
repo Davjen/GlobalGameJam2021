@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.Events;
 
 
@@ -21,8 +22,8 @@ public class InputWithRB : MonoBehaviour
     float colliderSize;
     bool floating;
     Vector3 startScale;
+    //Vector3 currentScale;
 
-    public bool AttractorON;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +31,6 @@ public class InputWithRB : MonoBehaviour
         startScale = transform.localScale;
         rb = GetComponent<Rigidbody>();
         colliderSize = GetComponentInChildren<CapsuleCollider>().bounds.extents.z;
-
         //Debug
         floating = true;
     }
@@ -52,22 +52,25 @@ public class InputWithRB : MonoBehaviour
 
         //add translation
         rb.AddForce(transform.right * fwd);
-        //rb.velocity = transform.right * fwd;
-
-        if (!floating)
-            rb.rotation = Quaternion.Slerp(transform.rotation, platformRot, Time.deltaTime * GroundingMultiplier).normalized;
-
-        if (!grounded && floating)
-            rb.rotation = Quaternion.Slerp(transform.rotation, platformRot, Time.deltaTime * FloatingMultiplier).normalized;
+        LookCenter();
 
 
-        //add jump force
         if (jump && grounded)
         {
 
             rb.AddForce(dir * jumpForce, ForceMode.Impulse);
             jump = false;
         }
+
+        if (!floating)
+            rb.rotation = Quaternion.Slerp(transform.rotation, platformRot, Time.deltaTime * GroundingMultiplier).normalized;
+
+        if (!grounded && floating)
+            rb.rotation = Quaternion.Slerp(transform.rotation, platformRot, Time.deltaTime * FloatingMultiplier).normalized;
+        
+       
+
+        //add jump force
 
 
 
@@ -98,10 +101,10 @@ public class InputWithRB : MonoBehaviour
 
         }
 
-        Debug.Log(platformDist);
         if ((myDist + colliderSize - 0.1f <= platformDist) || collision.gameObject.tag == "WashingMachine")
         {
-            // transform.SetParent(collision.transform);
+            
+            //currentScale = transform.localScale;
             gravOn = false;
             grounded = true;
 
@@ -109,19 +112,15 @@ public class InputWithRB : MonoBehaviour
             {
                 floating = false;
                 LookCenter();
+                transform.SetParent(collision.transform);
+
             }
-
-
+            else
+            {
+                transform.SetParent(collision.transform.parent);
+            }
+           
         }
-        //rb.velocity = Vector3.zero;
-
-        //if (collision.gameObject.tag == "WashingMachine")
-        //{
-        //    floating = false;
-        //    Vector3 dir = (center.position - transform.position).normalized;
-        //    platformRot = Quaternion.FromToRotation(transform.forward, dir);
-
-        //}
 
     }
 
@@ -146,27 +145,9 @@ public class InputWithRB : MonoBehaviour
             platformDist = (center.position - collision.transform.GetChild(0).position).magnitude;
 
         }
-        Debug.Log(platformDist);
 
         PlatformColliderSize platformSize;
         collision.gameObject.TryGetComponent<PlatformColliderSize>(out platformSize);
-
-        //NEL CASO NON SI RISOLVA IL PROBLEMA PEDANA ATTIVIAMO L'ATTRACTOR -- VEDERE CON SIMONE
-        //IL PROBLEMA DELLE PIATTAFORME ESISTERà ANCHE PER IL CESTELLO CHE RUOTA-->PENSAVO DI CREARE UN EMPTY OBJ FIGLIO DEL PLAYER(?)o meglio WM CHE SI TROVA A DISTANZA R(CESTELLO) E SE FUNZIONA L'ATTRACTOR ANCHE LUI AVRà L'ATTRACTOR E QUANDO IL PLAYER
-        //TOCCA LA WM SI ATTIVA L'ATTRACTOR CHE LO SEGUIRà e LO PULLERà VERSO LA WM
-        #region Attractor
-        if (AttractorON)
-        {
-
-            PlatformScript attract;
-            if (collision.gameObject.TryGetComponent<PlatformScript>(out attract))
-            {
-                Debug.Log("test");
-                attract.Attractor(rb);
-            }
-        }
-        #endregion
-
 
         //N.B. useful if you don't wanna jump again when you touch a platform from edges
         if (collision.gameObject.tag != "WashingMachine" && collision.transform != transform.parent && (myDist + colliderSize - 0.1f >= platformDist))
@@ -174,10 +155,10 @@ public class InputWithRB : MonoBehaviour
         else
         {
             grounded = true;
+            LookCenter();
 
-            if (collision.gameObject.tag == "WashingMachine")
-                LookCenter();
-
+            //if (collision.gameObject.tag == "WashingMachine")
+            //transform.localScale = currentScale;
         }
 
 
@@ -190,7 +171,9 @@ public class InputWithRB : MonoBehaviour
     }
     private void OnCollisionExit(Collision collision)
     {
-        //transform.SetParent(null);
+        transform.SetParent(null);
+        
+
         //transform.localScale = startScale;
         gravOn = true;
         grounded = false;
@@ -200,7 +183,6 @@ public class InputWithRB : MonoBehaviour
             floating = true;
             LookCenter();
         }
-        //platformRot = Quaternion.identity;
 
     }
 
