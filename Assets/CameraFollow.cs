@@ -32,7 +32,8 @@ public class CameraFollow : MonoBehaviour
     void Update()
     {
         Vector3 dist = player.position - transform.position;
-        transform.rotation = Quaternion.LookRotation(dist,Vector3.up);
+        //transform.rotation = Quaternion.LookRotation(dist,Vector3.up);
+        transform.forward = -Vector3.up;
         
 
         if (Input.GetKeyDown(KeyCode.Space))
