@@ -178,6 +178,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7027621129019701979, guid: dcdcd7a3e2793af4f9f466b2d5fa3d39, type: 3}
+      propertyPath: Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027621129019701979, guid: dcdcd7a3e2793af4f9f466b2d5fa3d39, type: 3}
+      propertyPath: Reset
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027621129019701979, guid: dcdcd7a3e2793af4f9f466b2d5fa3d39, type: 3}
+      propertyPath: SpawnOrbit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027621129019701979, guid: dcdcd7a3e2793af4f9f466b2d5fa3d39, type: 3}
+      propertyPath: CurrentOrbit
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027621129019701979, guid: dcdcd7a3e2793af4f9f466b2d5fa3d39, type: 3}
+      propertyPath: PlatformAngle
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027621129019701979, guid: dcdcd7a3e2793af4f9f466b2d5fa3d39, type: 3}
+      propertyPath: SpawnPlatform
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dcdcd7a3e2793af4f9f466b2d5fa3d39, type: 3}
 --- !u!1 &558197163
