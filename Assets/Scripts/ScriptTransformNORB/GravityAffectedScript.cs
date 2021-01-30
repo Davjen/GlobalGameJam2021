@@ -7,6 +7,7 @@ public class GravityAffectedScript : MonoBehaviour
     public WashingMachineMgr Mgr;
     public bool GravityOn;
     public Transform OriginGForce;
+    public AudioSource audioSource;
 
     float gSpeed;
     // Start is called before the first frame update
@@ -15,7 +16,11 @@ public class GravityAffectedScript : MonoBehaviour
         gSpeed = Mgr.GValue;
         
     }
-
+    private void Awake()
+    {
+        audioSource.time = StaticSavingScript.MUSIC_TIMER_START;
+        audioSource.Play();
+    }
 
 
     // Update is called once per frame
