@@ -31,7 +31,8 @@ public class StageManager : MonoBehaviour
     Dictionary<int, Transform> orbits = new Dictionary<int, Transform>();
     Dictionary<int,List<Transform>> platforms=new Dictionary<int, List<Transform>>();
     Dictionary<int, float> velocities = new Dictionary<int, float>();
-    Dictionary<int, Vector3[][]> configurations = new Dictionary<int, Vector3[][]>();
+    Dictionary<int, Vector3[][]> configurationsPosition = new Dictionary<int, Vector3[][]>();
+    Dictionary<int, Vector3[][]> configurationsScale = new Dictionary<int, Vector3[][]>();
 
 
 
@@ -102,7 +103,7 @@ public class StageManager : MonoBehaviour
                 DestroyImmediate(orbits[CurrentOrbit].gameObject);
                 orbits.Remove(CurrentOrbit);
                 platforms.Remove(CurrentOrbit);
-                configurations.Remove(CurrentOrbit);
+                configurationsScale.Remove(CurrentOrbit);
                 orbitsCounter = 0;
             }
         }
@@ -159,15 +160,23 @@ public class StageManager : MonoBehaviour
             {
                 if (platforms.ContainsKey(CurrentOrbit) && platforms[CurrentOrbit] != null)
                 {
-                    if (!configurations.ContainsKey(CurrentOrbit))
-                        configurations[CurrentOrbit] = new Vector3[(int)Configuration.None][];
+                    if (!configurationsPosition.ContainsKey(CurrentOrbit))
+                        configurationsPosition[CurrentOrbit] = new Vector3[(int)Configuration.None][];
 
-                    configurations[CurrentOrbit][(int)Configuration] = new Vector3[platforms[CurrentOrbit].Count];
+                    if (!configurationsScale.ContainsKey(CurrentOrbit))
+                        configurationsScale[CurrentOrbit] = new Vector3[(int)Configuration.None][];
+
+                    configurationsPosition[CurrentOrbit][(int)Configuration] = new Vector3[platforms[CurrentOrbit].Count];
+                    configurationsScale[CurrentOrbit][(int)Configuration] = new Vector3[platforms[CurrentOrbit].Count];
 
                     for (int i = 0; i < platforms[CurrentOrbit].Count; i++)
                     {
                         if (platforms[CurrentOrbit][i] != null)
-                            configurations[CurrentOrbit][(int)Configuration][i] = platforms[CurrentOrbit][i].position;
+                        {
+                            configurationsPosition[CurrentOrbit][(int)Configuration][i] = platforms[CurrentOrbit][i].position;
+                            configurationsScale[CurrentOrbit][(int)Configuration][i] = platforms[CurrentOrbit][i].localScale;
+
+                        }
                     }
 
 
@@ -185,7 +194,7 @@ public class StageManager : MonoBehaviour
         {
             if (orbits.ContainsKey(CurrentOrbit))
             {
-                if (configurations[CurrentOrbit][(int)Configuration] != null)
+                if (configurationsPosition[CurrentOrbit][(int)Configuration] != null && configurationsScale[CurrentOrbit][(int)Configuration]!=null)
                 {
                     for (int i = 0; i < platforms[CurrentOrbit].Count; i++)
                     {
@@ -193,12 +202,13 @@ public class StageManager : MonoBehaviour
                             DestroyImmediate(platforms[CurrentOrbit][i].gameObject);
                     }
 
-                    for (int i = 0; i < configurations[CurrentOrbit][(int)Configuration].Length; i++)
+                    for (int i = 0; i < configurationsPosition[CurrentOrbit][(int)Configuration].Length; i++)
                     {
-                        GameObject go = Instantiate(PlatformPrefab, configurations[CurrentOrbit][(int)Configuration][i], Quaternion.identity);
+                        GameObject go = Instantiate(PlatformPrefab, configurationsPosition[CurrentOrbit][(int)Configuration][i], Quaternion.identity);
                         Vector3 fwd = (WashingMachine.position - go.transform.position).normalized;
                         go.transform.rotation = Quaternion.LookRotation(fwd);
                         go.transform.SetParent(orbits[CurrentOrbit]);
+                        go.transform.localScale = configurationsScale[CurrentOrbit][(int)Configuration][i];
 
                         if (!platforms.ContainsKey(CurrentOrbit))
                             platforms[CurrentOrbit] = new List<Transform>();
