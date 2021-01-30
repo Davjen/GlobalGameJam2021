@@ -6,13 +6,15 @@ public class PlatformScript : MonoBehaviour
 {
     public Transform origin;
     public float TimeOfPositioning;
+    public float WashingMachieRadius;
     WashingMachineMgr owner;
     Vector3 PlatformNewDestination;
     Vector3 PreviousPosition;
     bool goToDestination;
     Collider myCollider;
     float timer;
-    bool isGravityAffected;
+    public bool isGravityAffected;
+    List<Vector3> StoredPosition = new List<Vector3>();
     // Start is called before the first frame update
     void Start()
     {
@@ -22,13 +24,24 @@ public class PlatformScript : MonoBehaviour
     private void Awake()
     {
         owner.GPlatformsEvent.AddListener(SetGravity);
+        owner.SendPositionEvent.AddListener(StoringPos);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-       
+        if (isGravityAffected)
+        {
+            Vector3 direction = owner.transform.position - transform.position;
+
+            transform.position -= direction.normalized * owner.GValue * Time.deltaTime;
+
+            if ((owner.transform.position - transform.position).magnitude >= WashingMachieRadius)
+            {
+                isGravityAffected = false;
+            }
+        }
+
         if (goToDestination)
         {
             Vector3 Dir = origin.position - transform.position;
@@ -51,6 +64,18 @@ public class PlatformScript : MonoBehaviour
         PreviousPosition = transform.position;
         goToDestination = true;
 
+    }
+    public void StartSetPosition(bool start)
+    {
+        goToDestination = start;
+    }
+    public void StoringPos(Vector3 pos)
+    {
+        StoredPosition.Add(pos);
+        if (StoredPosition.Count == 3)
+        {
+            SetPlatformDestination(StoredPosition[Random.Range(0, StoredPosition.Count)]);
+        }
     }
     public void SetGravity(bool status)
     {
