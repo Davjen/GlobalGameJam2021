@@ -5,36 +5,47 @@ using UnityEngine;
 public class Menu_Mgr : MonoBehaviour
 {
     //Animazione Bottoni
-    public Animator anim;
+    //public Animator anim;
     private bool Audio_On = true;
     private int IDLE_Hashe;
 
     //Animazione Camera
-    private bool startCameraAnim = false;
-    private Transform camera;
+    public bool startCameraAnim;
+    public Transform CameraRef;
     public Transform tgtCamera;
     public float speed = 10f;
+    public float TranslateTimer, RotationTimer;
+
+    public List<Transform> TgTCameraPositions;
 
     public int level = 1;
 
     public AudioSource MusicTheme;
+
+    Vector3 tgTPosition,oldPosition;
+    Quaternion tgtRotation, oldRotation;
+    
+    float lerpTimer;
+    int counterPos = 1;
+    bool doingAnimation;
 
 
     // Start is called before the first frame update
     void Start()
     {
 
-        camera = Camera.main.transform;
-        IDLE_Hashe = Animator.StringToHash("IDLE");
+        oldPosition = CameraRef.position;
+        oldRotation = CameraRef.rotation;
+        //IDLE_Hashe = Animator.StringToHash("IDLE");
     }
     public void AudioOn()
     {
         //wait for end animation
-        AnimatorStateInfo animInfo = anim.GetCurrentAnimatorStateInfo(0);
-        if (!Audio_On && animInfo.IsName("IDLE"))
+        //AnimatorStateInfo animInfo = anim.GetCurrentAnimatorStateInfo(0);
+        if (!Audio_On /*&& animInfo.IsName("IDLE")*/)
         {
             Audio_On = true;
-            anim.SetTrigger("on");
+            //anim.SetTrigger("on");
             if (!MusicTheme.isPlaying)
                 MusicTheme.Play();
         }
@@ -43,12 +54,12 @@ public class Menu_Mgr : MonoBehaviour
     public void AudioOff()
     {
         //wait for end animation
-        AnimatorStateInfo animInfo = anim.GetCurrentAnimatorStateInfo(0);
-        if (Audio_On && animInfo.IsName("IDLE"))
+        //AnimatorStateInfo animInfo = anim.GetCurrentAnimatorStateInfo(0);
+        if (Audio_On /*&& animInfo.IsName("IDLE")*/)
         {
             Audio_On = false;
             MusicTheme.Stop();
-            anim.SetTrigger("off");
+            //anim.SetTrigger("off");
 
         }
     }
@@ -65,8 +76,42 @@ public class Menu_Mgr : MonoBehaviour
     {
         if (startCameraAnim)
         {
-            camera.position = Vector3.Lerp(camera.position, tgtCamera.position, speed * Time.deltaTime);
-            camera.rotation = Quaternion.Lerp(camera.rotation, tgtCamera.rotation, speed * Time.deltaTime);
+            if (!doingAnimation && counterPos < TgTCameraPositions.Count - 1)
+            {
+                doingAnimation = true;
+                tgTPosition = PickPositions(counterPos);
+                tgtRotation = PickRotation(counterPos);
+            }
+            lerpTimer += Time.deltaTime;
+            CameraRef.position = Vector3.Lerp(oldPosition, tgTPosition, lerpTimer / TranslateTimer);
+            CameraRef.rotation = Quaternion.Lerp(oldRotation, tgtRotation, lerpTimer / RotationTimer);
+            NextAnimation();
+            if(counterPos <TgTCameraPositions.Count - 1)//SI TROVA DAVANTI AL MENù
+            {
+
+            }
         }
+    }
+
+    private void NextAnimation()
+    {
+        if ((lerpTimer / TranslateTimer >= 1) && (lerpTimer / RotationTimer >= 1))
+        {
+            oldPosition = tgTPosition;
+            oldRotation = tgtRotation;
+            lerpTimer = 0;
+            counterPos++;
+            doingAnimation = false;
+        }
+    }
+
+    Vector3 PickPositions(int index)
+    {
+
+        return TgTCameraPositions[index].position;
+    }
+    Quaternion PickRotation(int index)
+    {
+        return TgTCameraPositions[index].rotation;
     }
 }
