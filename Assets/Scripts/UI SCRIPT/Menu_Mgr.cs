@@ -83,8 +83,8 @@ public class Menu_Mgr : MonoBehaviour
                 tgtRotation = PickRotation(counterPos);
             }
             lerpTimer += Time.deltaTime;
-            CameraRef.position = Vector3.Lerp(oldPosition, tgTPosition, lerpTimer / TranslateTimer);
-            CameraRef.rotation = Quaternion.Lerp(oldRotation, tgtRotation, lerpTimer / RotationTimer);
+            CameraRef.position = Vector3.Slerp(oldPosition, tgTPosition, lerpTimer / TranslateTimer);
+            CameraRef.rotation = Quaternion.Slerp(oldRotation, tgtRotation, lerpTimer / RotationTimer);
             NextAnimation();
             if(counterPos <TgTCameraPositions.Count - 1)//SI TROVA DAVANTI AL MENù
             {
