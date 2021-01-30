@@ -148,7 +148,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 347270251}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.7770538, y: 7.913553, z: -20.522705}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 825446378}
@@ -166,15 +166,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7721be46d64a94c469137d61c984a1e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WashingMachine: {fileID: 0}
-  OrbitPrefab: {fileID: 0}
-  PlatformPrefab: {fileID: 0}
-  Mode: 0
-  CurrentOrbit: 0
-  OrbitRadius: 0
-  PlatformAngle: 0
+  WashingMachine: {fileID: 347270252}
+  OrbitPrefab: {fileID: 4749340141395363244, guid: 54c7c7ef66c3d96439e009c46c07da5a, type: 3}
+  PlatformPrefab: {fileID: 254894377764666924, guid: f024eed2426a3f04e828bc39b328030b, type: 3}
+  Mode: 1
+  CurrentOrbit: 1
+  OrbitRadius: 10
+  PlatformAngle: 180
   PlatformOffset: {x: 0, y: 0}
-  Configuration: 3
+  Configuration: 1
   OrbitVelocity: 0
   SpawnOrbit: 0
   RemoveOrbit: 0
@@ -208,13 +208,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 825446377}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.404232, y: -18.211409, z: 50.42353}
+  m_LocalPosition: {x: 1.4, y: -11.2, z: 14.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 347270252}
   - {fileID: 2048048587}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1025816028
 GameObject:
@@ -349,15 +349,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6892675808806183839, guid: f30d23193c20fd140a21e39993d5b80a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10.404232
+      value: 2.777054
       objectReference: {fileID: 0}
     - target: {fileID: 6892675808806183839, guid: f30d23193c20fd140a21e39993d5b80a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 18.211409
+      value: -7.9135537
       objectReference: {fileID: 0}
     - target: {fileID: 6892675808806183839, guid: f30d23193c20fd140a21e39993d5b80a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -50.42353
+      value: 20.522705
       objectReference: {fileID: 0}
     - target: {fileID: 6892675808806183839, guid: f30d23193c20fd140a21e39993d5b80a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -394,64 +394,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6892675808806183839, guid: f30d23193c20fd140a21e39993d5b80a, type: 3}
   m_PrefabInstance: {fileID: 2048048586}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &7027621129559161458
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1531683388867252980, guid: dcdcd7a3e2793af4f9f466b2d5fa3d39, type: 3}
-      propertyPath: m_Name
-      value: PlaybleWashMachine
-      objectReference: {fileID: 0}
-    - target: {fileID: 1531683388867252980, guid: dcdcd7a3e2793af4f9f466b2d5fa3d39, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6892675808806183839, guid: dcdcd7a3e2793af4f9f466b2d5fa3d39, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6892675808806183839, guid: dcdcd7a3e2793af4f9f466b2d5fa3d39, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.00000023841858
-      objectReference: {fileID: 0}
-    - target: {fileID: 6892675808806183839, guid: dcdcd7a3e2793af4f9f466b2d5fa3d39, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 4.050885
-      objectReference: {fileID: 0}
-    - target: {fileID: 6892675808806183839, guid: dcdcd7a3e2793af4f9f466b2d5fa3d39, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.0021870136
-      objectReference: {fileID: 0}
-    - target: {fileID: 6892675808806183839, guid: dcdcd7a3e2793af4f9f466b2d5fa3d39, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6892675808806183839, guid: dcdcd7a3e2793af4f9f466b2d5fa3d39, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6892675808806183839, guid: dcdcd7a3e2793af4f9f466b2d5fa3d39, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6892675808806183839, guid: dcdcd7a3e2793af4f9f466b2d5fa3d39, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6892675808806183839, guid: dcdcd7a3e2793af4f9f466b2d5fa3d39, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6892675808806183839, guid: dcdcd7a3e2793af4f9f466b2d5fa3d39, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6892675808806183839, guid: dcdcd7a3e2793af4f9f466b2d5fa3d39, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: dcdcd7a3e2793af4f9f466b2d5fa3d39, type: 3}
