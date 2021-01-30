@@ -1,12 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+
 
 public class PlatformScript : MonoBehaviour
 {
+    [Range (0f,10f)]
+    public float platformGravityValue;
+
     public Transform origin;
     public float TimeOfPositioning;
     public float WashingMachieRadius;
+   
     WashingMachineMgr owner;
     Vector3 PlatformNewDestination;
     Vector3 PreviousPosition;
@@ -15,6 +21,8 @@ public class PlatformScript : MonoBehaviour
     float timer;
     public bool isGravityAffected;
     List<Vector3> StoredPosition = new List<Vector3>();
+
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -76,6 +84,15 @@ public class PlatformScript : MonoBehaviour
         {
             SetPlatformDestination(StoredPosition[Random.Range(0, StoredPosition.Count)]);
         }
+    }
+
+    public void Attractor(Rigidbody rbToAttract)
+    {
+        Vector3 gravityDirection = transform.position - rbToAttract.position;
+        //float distance = gravityDirection.magnitude; VOGLIAMO RENDERLA PROPORZIONALE ALLA DISTANZA E ALLE MASSE DEGLI OGGETTI IN GIOCO COME NELLA REALTà? m*m/r^2
+        Vector3 force = gravityDirection.normalized;
+        rbToAttract.AddForce(force);       
+
     }
     public void SetGravity(bool status)
     {

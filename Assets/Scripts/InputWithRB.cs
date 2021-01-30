@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+
 
 public class InputWithRB : MonoBehaviour
 {
@@ -46,8 +48,9 @@ public class InputWithRB : MonoBehaviour
                 rb.rotation = Quaternion.LookRotation(dir);
             }
 
-            //add translation
-            rb.AddForce(transform.right * fwd);
+        //add translation
+        rb.AddForce(transform.right * fwd);
+        //rb.velocity = transform.right * fwd;
 
             if (!floating)
                 rb.rotation = Quaternion.Slerp(transform.rotation, platformRot, Time.deltaTime * GroundingMultiplier).normalized;
@@ -146,9 +149,20 @@ public class InputWithRB : MonoBehaviour
         PlatformColliderSize platformSize;
         collision.gameObject.TryGetComponent<PlatformColliderSize>(out platformSize);
 
+        //NEL CASO NON SI RISOLVA IL PROBLEMA PEDANA ATTIVIAMO L'ATTRACTOR -- VEDERE CON SIMONE
+        //IL PROBLEMA DELLE PIATTAFORME ESISTERà ANCHE PER IL CESTELLO CHE RUOTA-->PENSAVO DI CREARE UN EMPTY OBJ FIGLIO DEL PLAYER(?)o meglio WM CHE SI TROVA A DISTANZA R(CESTELLO) E SE FUNZIONA L'ATTRACTOR ANCHE LUI AVRà L'ATTRACTOR E QUANDO IL PLAYER
+        //TOCCA LA WM SI ATTIVA L'ATTRACTOR CHE LO SEGUIRà e LO PULLERà VERSO LA WM
+        #region Attractor
+        //PlatformScript attract;
+        //if(collision.gameObject.TryGetComponent<PlatformScript>(out attract))
+        //{
+        //    attract.Attractor(rb);
+        //}
+        #endregion
 
-            //N.B. useful if you don't wanna jump again when you touch a platform from edges
-            if(collision.gameObject.tag != "WashingMachine" && collision.transform != transform.parent && (myDist + colliderSize - 0.1f >= platformDist))
+
+        //N.B. useful if you don't wanna jump again when you touch a platform from edges
+        if (collision.gameObject.tag != "WashingMachine" && collision.transform != transform.parent && (myDist + colliderSize - 0.1f >= platformDist))
                 grounded = false;
             else
             {
