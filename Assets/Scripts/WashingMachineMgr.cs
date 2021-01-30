@@ -23,7 +23,6 @@ public class WashingMachineMgr : MonoBehaviour
     bool stopMotionTrigger;
 
     List<Vector3> positionList = new List<Vector3>();
-    List<Vector3> UsedPositions = new List<Vector3>();
     //TRAMITE EVENT IMPOSTA LE VELOCITà DELLE ORBITE
 
 
@@ -71,6 +70,7 @@ public class WashingMachineMgr : MonoBehaviour
 
                     //RIPOSIZIONARE LE PIATTAFORME ALLE POSIZIONI STABILITE.
                     //SendPositionEvent.Invoke(positions);
+                    SendPositions();
                     //SPENGO LA GRAVITà ALLE PIATTAFORME
                     GPlatformsEvent.Invoke(false);
 
@@ -95,10 +95,20 @@ public class WashingMachineMgr : MonoBehaviour
 
     void SendPositions()
     {
-        for (int i = 0; i < 3; i++)
+        int count = positionList.Count;
+        for (int j = 0; j < Platform.Count; j++)
         {
-            int rndPosIndex = Random.Range(0, positionList.Count - 1);
 
+            for (int i = 0; i < 3; i++)
+            {
+                int rndPosIndex = Random.Range(0, count);
+
+                SendPositionEvent.Invoke(positionList[rndPosIndex]);
+                Vector3 pos = positionList[count];
+                positionList[count] = positionList[rndPosIndex];
+                positionList[rndPosIndex] = pos;
+                count--;
+            }
         }
     }
 
