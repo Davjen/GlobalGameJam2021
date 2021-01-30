@@ -6,71 +6,108 @@ using UnityEngine.Events;
 
 public class PlatformScript : MonoBehaviour
 {
-    [Range (0f,100f)]
-    public float platformGravityValue;
-
-    public Transform origin;
-    public float TimeOfPositioning;
-    public float WashingMachieRadius;
    
-    WashingMachineMgr owner;
+    public Transform Center;
+    public WashingMachineMgr Owner { get; protected set; }
+
+    Vector3 startPosition;
     Vector3 PlatformNewDestination;
     Vector3 PreviousPosition;
     bool goToDestination;
-    Collider myCollider;
-    float timer;
-    public bool isGravityAffected;
+    bool isGravityAffected;
+    Collider[] myColliders= new Collider[2];
+    float timer=0;
+
     List<Vector3> StoredPosition = new List<Vector3>();
 
     
     // Start is called before the first frame update
-    void Start()
+    public void Init()
     {
-        myCollider = transform.GetComponent<Collider>();
+        startPosition = transform.position;
+        enabled = true;
+        myColliders = transform.GetComponents<Collider>();
     }
 
-    private void Awake()
+    private void OnEnable()
     {
-        //owner.GPlatformsEvent.AddListener(SetGravity);
-        //owner.SendPositionEvent.AddListener(StoringPos);
+        if(Owner!= null)
+        {
+            Owner.SubscribePlatformGravitation(SetGravity, true);
+            Owner.SubscribeSendPosition(SetPlatformDestination, true);
+        }
     }
+
+    private void OnDisable()
+    {
+        if (Owner != null)
+        {
+            Owner.SubscribePlatformGravitation(SetGravity, false);
+            Owner.SubscribeSendPosition(SetPlatformDestination, false);
+        }
+    }
+
+    public void SetOwner(WashingMachineMgr wMgr)
+    {
+        if (wMgr != null)
+            Owner = wMgr;
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.tag == "WashingMachine")
+        {
+            SetGravity(false);
+        }
+        
+    }
+    
+
 
     // Update is called once per frame
     void Update()
     {
         if (isGravityAffected)
         {
-            Vector3 direction = owner.transform.position - transform.position;
+            Vector3 direction = (Owner.transform.position - transform.position).normalized;
 
-            transform.position -= direction.normalized * owner.GValue * Time.deltaTime;
+            transform.position += -direction * Owner.GValue * Time.deltaTime;
 
-            if ((owner.transform.position - transform.position).magnitude >= WashingMachieRadius)
-            {
-                isGravityAffected = false;
-            }
         }
 
         if (goToDestination)
         {
-            Vector3 Dir = origin.position - transform.position;
+            Vector3 Dir = Center.position - transform.position;
             transform.rotation = Quaternion.LookRotation(Dir);
             timer += Time.deltaTime;
-            transform.position = Vector3.Lerp(PreviousPosition, PlatformNewDestination, timer/TimeOfPositioning);
-            if ((transform.position - PlatformNewDestination).magnitude < 0.05f)
+            float fraction = timer / Owner.TimeOfPlatformPositioning;
+            transform.position = Vector3.Slerp(PreviousPosition, PlatformNewDestination, fraction);
+            if (timer>= Owner.TimeOfPlatformPositioning)
             {
-                
-                myCollider.enabled = true;
-                goToDestination = false;
                 timer = 0;
+                transform.position = PlatformNewDestination;
+                myColliders[0].enabled = true;
+                myColliders[1].enabled = true;
+                StartSetPosition(false);
+                Owner.RestartWashingMachine();
             }
         }
     }
-    public void SetPlatformDestination(Vector3 destination)
+    //public void SetPlatformDestination(Vector3 destination)
+    //{
+    //    myCollider.enabled = false;
+    //    PlatformNewDestination = destination;
+    //    PreviousPosition = transform.position;
+    //    goToDestination = true;
+
+    //}
+
+    public void SetPlatformDestination(bool b)
     {
-        myCollider.enabled = false;
-        PlatformNewDestination = destination;
+        myColliders[0].enabled = false;
+        myColliders[1].enabled = false;
         PreviousPosition = transform.position;
-        goToDestination = true;
+        PlatformNewDestination = startPosition;
+        StartSetPosition(b);
 
     }
     public void StartSetPosition(bool start)
@@ -82,24 +119,11 @@ public class PlatformScript : MonoBehaviour
         StoredPosition.Add(pos);
         if (StoredPosition.Count == 3)
         {
-            SetPlatformDestination(StoredPosition[Random.Range(0, StoredPosition.Count)]);
+            //SetPlatformDestination(StoredPosition[Random.Range(0, StoredPosition.Count)]);
         }
     }
-    private void OnCollisionStay(Collision collision)
-    {
-        Vector3 gravityDirection = transform.position - collision.transform.position;
-        //float distance = gravityDirection.magnitude; VOGLIAMO RENDERLA PROPORZIONALE ALLA DISTANZA E ALLE MASSE DEGLI OGGETTI IN GIOCO COME NELLA REALTà? m*m/r^2
-        Vector3 force = gravityDirection.normalized;
-        collision.rigidbody.AddForce(force*platformGravityValue);
-    }
-    public void Attractor(Rigidbody rbToAttract)
-    {
-        Vector3 gravityDirection = transform.position - rbToAttract.position;
-        //float distance = gravityDirection.magnitude; VOGLIAMO RENDERLA PROPORZIONALE ALLA DISTANZA E ALLE MASSE DEGLI OGGETTI IN GIOCO COME NELLA REALTà? m*m/r^2
-        Vector3 force = gravityDirection.normalized;
-        rbToAttract.AddForce(force);       
-
-    }
+ 
+  
     public void SetGravity(bool status)
     {
         isGravityAffected = status;
