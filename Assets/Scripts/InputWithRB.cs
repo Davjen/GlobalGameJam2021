@@ -24,7 +24,6 @@ public class InputWithRB : MonoBehaviour
     Vector3 startScale;
     //Vector3 currentScale;
 
-    public bool AttractorON;
 
     // Start is called before the first frame update
     void Start()
@@ -102,7 +101,6 @@ public class InputWithRB : MonoBehaviour
 
         }
 
-        Debug.Log(platformDist);
         if ((myDist + colliderSize - 0.1f <= platformDist) || collision.gameObject.tag == "WashingMachine")
         {
             
@@ -147,27 +145,9 @@ public class InputWithRB : MonoBehaviour
             platformDist = (center.position - collision.transform.GetChild(0).position).magnitude;
 
         }
-        Debug.Log(platformDist);
 
         PlatformColliderSize platformSize;
         collision.gameObject.TryGetComponent<PlatformColliderSize>(out platformSize);
-
-        //NEL CASO NON SI RISOLVA IL PROBLEMA PEDANA ATTIVIAMO L'ATTRACTOR -- VEDERE CON SIMONE
-        //IL PROBLEMA DELLE PIATTAFORME ESISTERà ANCHE PER IL CESTELLO CHE RUOTA-->PENSAVO DI CREARE UN EMPTY OBJ FIGLIO DEL PLAYER(?)o meglio WM CHE SI TROVA A DISTANZA R(CESTELLO) E SE FUNZIONA L'ATTRACTOR ANCHE LUI AVRà L'ATTRACTOR E QUANDO IL PLAYER
-        //TOCCA LA WM SI ATTIVA L'ATTRACTOR CHE LO SEGUIRà e LO PULLERà VERSO LA WM
-        #region Attractor
-        //if (AttractorON)
-        //{
-
-        //    PlatformScript attract;
-        //    if (collision.gameObject.TryGetComponent<PlatformScript>(out attract))
-        //    {
-        //        Debug.Log("test");
-        //        attract.Attractor(rb);
-        //    }
-        //}
-        #endregion
-
 
         //N.B. useful if you don't wanna jump again when you touch a platform from edges
         if (collision.gameObject.tag != "WashingMachine" && collision.transform != transform.parent && (myDist + colliderSize - 0.1f >= platformDist))

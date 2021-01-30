@@ -1185,10 +1185,10 @@ MonoBehaviour:
   center: {fileID: 2000915537}
   grav: 10
   gravOn: 1
-  speed: 10
+  speed: 15
   jumpForce: 8
   FloatingMultiplier: 10
-  GroundingMultiplier: 5
+  GroundingMultiplier: 10
   AttractorON: 0
 --- !u!54 &748225232
 Rigidbody:
