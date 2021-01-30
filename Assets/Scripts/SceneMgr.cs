@@ -19,7 +19,7 @@ public class SceneMgr : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        
+
     }
 
     void PlayMusic()
@@ -61,8 +61,9 @@ public class SceneMgr : MonoBehaviour
             image.color = new Color(0, 0, 0, alpha);
             if (image.color.a >= 1)
             {
-
-                SceneManager.LoadScene("MattiaScene");
+                StaticSavingScript.MUSIC_TIMER_START = audioSource.time;
+                audioSource.Stop();
+            SceneManager.LoadScene("MattiaScene");
             }
         }
     }
