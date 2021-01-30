@@ -4,23 +4,26 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Transform target;
-    public float FadeOutDistance = 6;
-    public float FadeOutSpeed = 3;
-    public float minDistFromTarget = 4;
-    public float maxDistFromTarget;
-    private float currDist;
-    public KeyCode switchCamera = KeyCode.W;
-    private float newDist;
-    private bool moveToNewPos;
+    public Transform player;
+    public float minDist, maxDist;
+    public float lerpSpeed = 6;
+
+
+    private Transform cameraTarget;
+    private float diff;
+    private bool lerp;
+    private bool canLerp = true;
+    private Vector3 newPos;
     private bool near = true;
 
     // Start is called before the first frame update
     void Start()
     {
-        currDist = minDistFromTarget;
-        maxDistFromTarget = currDist + minDistFromTarget;
-        transform.position = target.position + (Vector3.up * currDist);
+        diff = maxDist - minDist;
+        cameraTarget = new GameObject("camera_target").transform;
+        transform.SetParent(cameraTarget);
+        cameraTarget.position = player.position;
+        transform.position = cameraTarget.position + new Vector3(0,minDist,0);
     }
 
 
@@ -28,23 +31,32 @@ public class CameraFollow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Vector3 dist = player.position - transform.position;
+        transform.rotation = Quaternion.LookRotation(dist,Vector3.up);
+        
 
-        if (Input.GetKeyDown(switchCamera))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
+            lerp = true;
             if (near)
             {
-                newDist = maxDistFromTarget;
+                newPos = cameraTarget.position + new Vector3(0, maxDist, 0);
+                near = false;
             }
             else
             {
-                newDist = minDistFromTarget;
+                newPos = cameraTarget.position + new Vector3(0, minDist, 0);
+                near = true;
             }
         }
 
-        currDist = Vector3.Distance(transform.position, target.position);
-        if (currDist != newDist)
+        if (lerp)
         {
-            transform.position = Vector3.Lerp(transform.position,target.position + (Vector3.up * newDist) ,FadeOutSpeed);
+            transform.position = Vector3.Lerp(transform.position, newPos,lerpSpeed * Time.deltaTime);
+            if (Mathf.Approximately(transform.position.y, newPos.y))
+            {
+                lerp = false;
+            }
         }
     }
 }
