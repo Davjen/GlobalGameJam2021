@@ -128,10 +128,15 @@ public class InputWithRB : MonoBehaviour
     {
 
 
-
-        floating = false;
-        platformRot = Quaternion.LookRotation(other.transform.forward);
-
+        if (other.gameObject.tag != "CentralButton")
+        {
+            floating = false;
+            platformRot = Quaternion.LookRotation(other.transform.forward);
+        }
+        else
+        {
+            //WashingMachineMgr.StopMotionTrigger = true;
+        }
 
     }
 
@@ -166,8 +171,11 @@ public class InputWithRB : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        floating = true;
-        LookCenter();
+        if (other.gameObject.tag != "CentralButton")
+        {
+            floating = true;
+            LookCenter();
+        }
     }
     private void OnCollisionExit(Collision collision)
     {

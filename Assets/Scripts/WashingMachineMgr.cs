@@ -1,17 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Events;
 using UnityEngine;
 using UnityEngine.Events;
 
 public enum Level { Easy,Medium,Hard}
 [SerializeField]
 public class ActivatePlatformsEvent : UnityEvent<bool> { }
-public class SetPlatformPosition : UnityEvent<Vector3> { }
+public class SetPlatformPosition : UnityEvent<bool> { }
 public class WashingMachineMgr : MonoBehaviour
 {
 
     public List<PlatformScript> Platform = new List<PlatformScript>();
-    public List<Transform> Orbits;
+    public List<AutorRotateOrbit> Orbits;
 
     public float GValue;
     public bool ApplyGAll, RemoveGForce;
@@ -20,8 +21,13 @@ public class WashingMachineMgr : MonoBehaviour
     public SetPlatformPosition SendPositionEvent;
     private float centrifugaNotMovingTimer;
     private float rotationSpeed;
-    private bool startGame;
-    bool stopMotionTrigger;
+    public bool startGame;
+    bool startOrbiting;
+    bool platformFall;
+    public bool StopMotionTrigger;
+    public bool TimerIsOver;
+    public float TimeOfPlatformPositioning = 1;
+
 
     List<Vector3> positionList = new List<Vector3>();
     private float centrifugaNotMovingTimerValue;
@@ -56,8 +62,45 @@ public class WashingMachineMgr : MonoBehaviour
         startGame = true;
     }
 
-    void Start()
+    
+
+    public void SubscribePlatformGravitation(UnityAction<bool> onActivatePlatform, bool b)
     {
+        if (b)
+            UnityEventTools.AddPersistentListener(GPlatformsEvent, onActivatePlatform);
+        else
+            UnityEventTools.RemovePersistentListener(GPlatformsEvent, onActivatePlatform);
+
+    }
+
+    public void SubscribeSendPosition(UnityAction<bool> onSetPlatformPos, bool b)
+    {
+        if (b)
+            UnityEventTools.AddPersistentListener(SendPositionEvent, onSetPlatformPos);
+        else
+            UnityEventTools.RemovePersistentListener(SendPositionEvent, onSetPlatformPos);
+
+    }
+
+    public void RestartWashingMachine()
+    {
+        startOrbiting = false;
+        platformFall = false;
+        StopMotionTrigger = false;
+
+    }
+
+    void Awake()
+    {
+        GPlatformsEvent = new ActivatePlatformsEvent();
+        SendPositionEvent = new SetPlatformPosition();
+        AutorotateOrbits(false);
+
+        for (int i = 0; i < Platform.Count; i++)
+        {
+            Platform[i].SetOwner(this);
+            Platform[i].Init();
+        }
         //RIEMPIRE LA LISTA DI USABLE positionList
     }
 
@@ -67,35 +110,49 @@ public class WashingMachineMgr : MonoBehaviour
              
         if (startGame)
         {
+            if (!startOrbiting)
+            {
+                AutorotateOrbits(true);
+                startOrbiting = true;
+            }
+
             TickEndGame();
             if(EndGame())
             {
                 //FINE DEL GIOCO.
             }
             //METTE IN MOTO LE PIATTAFORME
-            AutorotateOrbits();
-            if (stopMotionTrigger)//QUANDO IL PLAYER RAGGIUNGE IL CENTRO DELLA LAVATRICE E TRIGGERA LO STOP
+            if (StopMotionTrigger)//QUANDO IL PLAYER RAGGIUNGE IL CENTRO DELLA LAVATRICE E TRIGGERA LO STOP
             {
                 //FAI CADERE LE PIATTAFORME.
-                GPlatformsEvent.Invoke(true);
+
+                if (!platformFall)
+                {
+                    GPlatformsEvent.Invoke(true);
+                    platformFall = true;
+                    AutorotateOrbits(false);
+                    //Internal circle disappearing animation to add
+                }
                 Tick();
 
-                if (TimeIsOver()) //scade IL TEMPO DELLA CENTRIFUGA FERMA.
+                if (/*TimeIsOver()*/ TimerIsOver) //scade IL TEMPO DELLA CENTRIFUGA FERMA.
                 {
                     ResetTimer();
+                    TimerIsOver = false;
                     //RIPOSIZIONARE LE PIATTAFORME ALLE POSIZIONI STABILITE.
-                    GPlatformsEvent.Invoke(false);
-                    SendPositions();
+                    //GPlatformsEvent.Invoke(false);
+                    SendPositionEvent.Invoke(true);
+
                 }
             }
         }
     }
 
-    void AutorotateOrbits()
+    void AutorotateOrbits(bool b)
     {
         for (int i = 0; i < Orbits.Count; i++)
         {
-            Orbits[i].Rotate(new Vector3(0, rotationSpeed * Time.deltaTime, 0));
+            Orbits[i].enabled = b;
         }
     }
     void SendPositions()
@@ -108,7 +165,7 @@ public class WashingMachineMgr : MonoBehaviour
             {
                 int rndPosIndex = Random.Range(0, count);
 
-                SendPositionEvent.Invoke(positionList[rndPosIndex]);
+                //SendPositionEvent.Invoke(positionList[rndPosIndex]);
                 Vector3 pos = positionList[count];
                 positionList[count] = positionList[rndPosIndex];
                 positionList[rndPosIndex] = pos;

@@ -21,7 +21,7 @@ public class ManagerScript : MonoBehaviour
             testStart = false;
             for (int i = 0; i < platform.Count; i++)
             {
-                platform[i].SetPlatformDestination(new Vector3(Random.Range(0, 10), Random.Range(0, 10), 0));
+                //platform[i].SetPlatformDestination(new Vector3(Random.Range(0, 10), Random.Range(0, 10), 0));
             }
             
         }
