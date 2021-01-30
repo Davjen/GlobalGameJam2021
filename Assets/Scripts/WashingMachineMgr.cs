@@ -15,7 +15,7 @@ public class WashingMachineMgr : MonoBehaviour
 
     public float GValue;
     public bool ApplyGAll, RemoveGForce;
-    public string PlayerSceneObjName;
+    public bool PLAYSOUND;
     public ActivatePlatformsEvent GPlatformsEvent;
     public SetPlatformPosition SendPositionEvent;
     private float centrifugaNotMovingTimer;

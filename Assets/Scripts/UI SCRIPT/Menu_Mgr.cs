@@ -16,11 +16,14 @@ public class Menu_Mgr : MonoBehaviour
     public float speed = 10f;
 
     public int level = 1;
-    public WashingMachineMgr MachineMgr;
+
+    public AudioSource MusicTheme;
+
 
     // Start is called before the first frame update
     void Start()
     {
+
         camera = Camera.main.transform;
         IDLE_Hashe = Animator.StringToHash("IDLE");
     }
@@ -32,6 +35,8 @@ public class Menu_Mgr : MonoBehaviour
         {
             Audio_On = true;
             anim.SetTrigger("on");
+            if (!MusicTheme.isPlaying)
+                MusicTheme.Play();
         }
 
     }
@@ -42,14 +47,16 @@ public class Menu_Mgr : MonoBehaviour
         if (Audio_On && animInfo.IsName("IDLE"))
         {
             Audio_On = false;
+            MusicTheme.Stop();
             anim.SetTrigger("off");
-            
+
         }
     }
     public void StartGame()
     {
-        //MachineMgr.InitializeGame(level);
-        Debug.Log(level);
+        StaticSavingScript.LEVEL_DIFFICULTY = level;
+        StaticSavingScript.MUSIC_TIMER_START = MusicTheme.time;
+
         startCameraAnim = true;
     }
 
