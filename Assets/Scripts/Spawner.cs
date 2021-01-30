@@ -16,7 +16,7 @@ public class Spawner : MonoBehaviour
     void Start()
     {
         StartGame(1);
-        
+        activeObj = new List<GameObject>();
     }
 
     //EVENT
@@ -25,6 +25,12 @@ public class Spawner : MonoBehaviour
         CanSpawn = true;
         currentObjSpawned = 0;
         InvokeRepeating("Spawn", 0.1f, delaySpawn);
+    }
+    public void DestroyObj(GameObject objToRemove)
+    {
+        currentObjSpawned--;
+        activeObj.Remove(objToRemove);
+        Destroy(objToRemove);
     }
     private void Spawn()
     {
@@ -39,10 +45,18 @@ public class Spawner : MonoBehaviour
 
             Vector3 pos = new Vector3(newPosX, transform.position.y, newPosZ);
             GameObject objToSpawn = prefabObstacles[index];
-            GameObject obj = Instantiate(objToSpawn);
+            GameObject obj = Instantiate(objToSpawn,transform);
+            ObstacleMovement script;
+            obj.TryGetComponent<ObstacleMovement>(out script);
+            script.spawnCenter = transform;
+            
             activeObj.Add(obj);
             obj.transform.position = pos;
             currentObjSpawned++;
+            if (currentObjSpawned >= MaxObjActive)
+            {
+                CanSpawn = false;
+            }
         }
     }
 

@@ -420,7 +420,7 @@ MonoBehaviour:
   MaxObjActive: 5
   delaySpawn: 1
   minDistSpawn: 5
-  maxDistSpawn: 37
+  maxDistSpawn: 35
 --- !u!4 &1281187161
 Transform:
   m_ObjectHideFlags: 0
