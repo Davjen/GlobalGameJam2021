@@ -6,6 +6,7 @@ public enum MovementType { Circular, Bounce, FromTop}
 public class ObstacleMovement : MonoBehaviour
 {
     public float speed = 5;
+    public Transform player;
     public MovementType movement;
     public Transform spawnCenter;
     private Rigidbody rb;
@@ -37,7 +38,7 @@ public class ObstacleMovement : MonoBehaviour
             case MovementType.FromTop:
                 update = UpdateFromTop;
                 collisionMethod = CollisionFromTop;
-                dirFromTop = transform.forward;
+                dirFromTop = player.position - transform.position;
                 canUpdateFromTop = true;
                 break;
             default:

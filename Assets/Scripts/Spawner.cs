@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
+    public Transform player;
     public List<GameObject> prefabObstacles;
     private List<GameObject> activeObj;
     public int MaxObjActive;
@@ -49,6 +50,7 @@ public class Spawner : MonoBehaviour
             ObstacleMovement script;
             obj.TryGetComponent<ObstacleMovement>(out script);
             script.spawnCenter = transform;
+            script.player = player;
             
             activeObj.Add(obj);
             obj.transform.position = pos;
