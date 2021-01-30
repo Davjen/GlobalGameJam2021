@@ -155,7 +155,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -253,12 +253,13 @@ MonoBehaviour:
   CameraRef: {fileID: 2066189889}
   tgtCamera: {fileID: 0}
   speed: 10
-  TranslateTimer: 1
-  RotationTimer: 1.5
+  TranslateTimer: 1.8
+  RotationTimer: 1.8
   TgTCameraPositions:
   - {fileID: 577246039}
   - {fileID: 1256820454}
   - {fileID: 95575975}
+  - {fileID: 634237836}
   - {fileID: 1440603583}
   - {fileID: 1843248883}
   - {fileID: 1304783894}
@@ -393,8 +394,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 634237835}
-  m_LocalRotation: {x: 0.0013408434, y: 0.9457377, z: -0.0038761417, w: 0.3249053}
-  m_LocalPosition: {x: -4.13, y: 7.02, z: -0.65}
+  m_LocalRotation: {x: 0.0013408437, y: 0.9457377, z: -0.0038761422, w: 0.3249053}
+  m_LocalPosition: {x: 0, y: 7.02, z: -0.65}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1334,16 +1335,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dfcaca9dad5f4f42afbd4e4b4570266, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Player: {fileID: 0}
   Platform: []
   Orbits: []
+  InternalCircleLowHandler: {fileID: 0}
+  DifficultyLevel: 3
   GValue: 0
-  ApplyGAll: 0
-  RemoveGForce: 0
   PLAYSOUND: 0
+  PlatformPositioningDuration: 1
+  LoweringInternalCircleDuration: 1
+  PlayerRepositioningDuration: 1
   startGame: 0
-  StopMotionTrigger: 0
-  TimerIsOver: 0
-  TimeOfPlatformPositioning: 1
 --- !u!4 &2081012863
 Transform:
   m_ObjectHideFlags: 0
