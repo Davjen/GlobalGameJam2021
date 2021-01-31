@@ -30,7 +30,7 @@ public class Menu_Mgr : MonoBehaviour
     float lerpTimer;
     int counterPos = 1;
     bool doingAnimation;
-    private bool startToFade;
+    public bool startToFade;
     float alpha;
     public float alphaMultiplier=2;
 
