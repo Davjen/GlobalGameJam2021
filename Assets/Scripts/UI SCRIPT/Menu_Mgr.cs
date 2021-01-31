@@ -22,6 +22,7 @@ public class Menu_Mgr : MonoBehaviour
     public Transform lastPosition;
 
     public int level = 1;
+    public Image buttonImage;
 
     public AudioSource MusicTheme, MouseOver, Selection;
 
@@ -37,6 +38,7 @@ public class Menu_Mgr : MonoBehaviour
     public float CountDownToMenu = 1.5f;
     private bool canProceed;
     bool STOP;
+    
 
 
 
@@ -96,6 +98,7 @@ public class Menu_Mgr : MonoBehaviour
         {
             alpha -= alphaMultiplier * Time.deltaTime;
             startMenu.color = new Color(startMenu.color.r, startMenu.color.g, startMenu.color.b, alpha);
+            buttonImage.color = new Color(buttonImage.color.r, buttonImage.color.g, buttonImage.color.b, alpha);
             if (startMenu.color.a <= 0)
             {
 
