@@ -11,10 +11,12 @@ public class InputWithRB : MonoBehaviour
     public Transform center;
     public float grav;
     public bool gravOn = true;
+    public float RepulseForce = 1;
     public float speed;
     public float jumpForce;
     public float FloatingMultiplier = 1f;
     public float GroundingMultiplier = 1f;
+    public ForceMode RepulseForceType = ForceMode.Force;
     bool jump;
     bool grounded;
     float fwd;
@@ -22,14 +24,13 @@ public class InputWithRB : MonoBehaviour
     float colliderSize;
     bool floating;
     bool recordInput;
-    Vector3 startScale;
-    //Vector3 currentScale;
+
     private int Lifes;
 
     // Start is called before the first frame update
     void Start()
     {
-        startScale = transform.localScale;
+        
         rb = GetComponent<Rigidbody>();
         colliderSize = GetComponentInChildren<CapsuleCollider>().bounds.extents.z;
         //Debug
@@ -88,6 +89,7 @@ public class InputWithRB : MonoBehaviour
     {
         if (recordInput)
         {
+
             fwd = Input.GetAxis("Horizontal") * speed;
 
 
@@ -123,7 +125,7 @@ public class InputWithRB : MonoBehaviour
 
         }
 
-        if ((myDist + colliderSize - 0.1f <= platformDist) || collision.gameObject.tag == "WashingMachineInternal"|| collision.gameObject.tag == "WashingMachineExternal")
+        if ((myDist + colliderSize -0.1f <= platformDist) || collision.gameObject.tag == "WashingMachineInternal"|| collision.gameObject.tag == "WashingMachineExternal")
         {
             
             //currentScale = transform.localScale;
@@ -177,10 +179,16 @@ public class InputWithRB : MonoBehaviour
         collision.gameObject.TryGetComponent<PlatformColliderSize>(out platformSize);
 
         //N.B. useful if you don't wanna jump again when you touch a platform from edges
-        if (collision.gameObject.tag != "WashingMachineInternal" && collision.gameObject.tag != "WashingMachineExternal" && collision.transform != transform.parent && (myDist + colliderSize - 0.1f >= platformDist))
+        if (collision.gameObject.tag != "WashingMachineInternal" && collision.gameObject.tag != "WashingMachineExternal" && collision.transform != transform.parent && (myDist + colliderSize-0.2f >= platformDist))
+        {
             grounded = false;
+            //repulse = true;
+            Vector3 repulseDir = (transform.position - collision.transform.position).normalized;
+            rb.AddForce(repulseDir * RepulseForce, RepulseForceType);
+        }
         else
         {
+           
             grounded = true;
             LookCenter();
 
