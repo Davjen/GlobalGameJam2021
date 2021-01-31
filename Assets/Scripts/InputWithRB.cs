@@ -26,6 +26,7 @@ public class InputWithRB : MonoBehaviour
     bool recordInput;
 
     private int Lifes;
+    private bool repulse;
 
     // Start is called before the first frame update
     void Start()
@@ -125,7 +126,7 @@ public class InputWithRB : MonoBehaviour
 
         }
 
-        if ((myDist + colliderSize <= platformDist) || collision.gameObject.tag == "WashingMachineInternal"|| collision.gameObject.tag == "WashingMachineExternal")
+        if ((myDist + colliderSize-0.1f <= platformDist) || collision.gameObject.tag == "WashingMachineInternal"|| collision.gameObject.tag == "WashingMachineExternal")
         {
             
             //currentScale = transform.localScale;
@@ -182,7 +183,7 @@ public class InputWithRB : MonoBehaviour
         if (collision.gameObject.tag != "WashingMachineInternal" && collision.gameObject.tag != "WashingMachineExternal" && collision.transform != transform.parent && (myDist + colliderSize-0.2f >= platformDist))
         {
             grounded = false;
-            //repulse = true;
+            repulse = true;
             Vector3 repulseDir = (transform.position - collision.transform.position).normalized;
             rb.AddForce(repulseDir * RepulseForce, RepulseForceType);
         }
@@ -209,9 +210,10 @@ public class InputWithRB : MonoBehaviour
     }
     private void OnCollisionExit(Collision collision)
     {
-        transform.SetParent(null);
-        
+        if(!repulse)
+            transform.SetParent(null);
 
+        repulse = false;
         //transform.localScale = startScale;
         gravOn = true;
         grounded = false;
