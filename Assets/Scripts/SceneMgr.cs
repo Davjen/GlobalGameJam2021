@@ -10,7 +10,7 @@ public class SceneMgr : MonoBehaviour
     public Image image;
     bool fade;
     float alpha = 0;
-    AudioSource audioSource;
+    public AudioSource audioSource,jump;
     public float test;
     public float currentTime;
     public ParticleSystem ps;
@@ -19,18 +19,23 @@ public class SceneMgr : MonoBehaviour
     private bool positioning;
     private bool positioningleft;
 
-    
+
+
+
+
+
 
     // Start is called before the first frame update
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        
+
         //particlestartPos = ps.shape.position.x;
         //particleleftPos = 4.04f;
     }
     private void Awake()
     {
-        
+
     }
     void PlayMusic()
     {
@@ -54,21 +59,26 @@ public class SceneMgr : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.C))
         {
-            GravityAffectedScript.testAction.Invoke();
-            //audioSource.time = test;
-            
 
-            //PlayMusic();
-          
+            //audioSource.time = test;
+
+            Debug.Log("test");
+            PlayMusic();
+
         }
 
         if (Input.GetKeyDown(KeyCode.A))
         {
+            if(!jump.isPlaying)
+            jump.Play();
+
             //if (positioning)
             //{
             //    positioning = false;
             //    particlestartPos = ps.shape.position.x;
             //}
+
+
         }
 
         if (Input.GetKeyDown(KeyCode.D))

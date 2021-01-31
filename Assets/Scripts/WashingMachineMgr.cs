@@ -30,6 +30,12 @@ public class WashingMachineMgr : MonoBehaviour
     public float LoweringInternalCircleDuration=1;
     public float PlayerRepositioningDuration = 1;
 
+
+    //DurationSetByGameDesiner
+    public float WashingMachineStopDuration;
+    public float GameTimeDuration;
+
+
     //Timers
     private float gameTimeTimer;
     private float washingMachineStopTimer;
@@ -66,18 +72,18 @@ public class WashingMachineMgr : MonoBehaviour
         switch (DifficultyLevel)
         {
             case Level.Easy:
-                washingMachineStopDuration = 30f;
-                gameTimeDuration = 180f;
+                washingMachineStopDuration = WashingMachineStopDuration;
+                gameTimeDuration = GameTimeDuration;
                 startGame = true;
                 break;
             case Level.Medium:
-                washingMachineStopDuration = 20f;
-                gameTimeDuration = 160f;
+                washingMachineStopDuration = WashingMachineStopDuration;
+                gameTimeDuration = GameTimeDuration;
                 startGame = true;
                 break;
             case Level.Hard:
-                washingMachineStopDuration = 15f;
-                gameTimeDuration = 120f;
+                washingMachineStopDuration = WashingMachineStopDuration;
+                gameTimeDuration = GameTimeDuration;
                 startGame = true;   
                 break;
         }

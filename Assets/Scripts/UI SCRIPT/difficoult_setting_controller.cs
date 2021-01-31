@@ -48,14 +48,18 @@ public class difficoult_setting_controller : MonoBehaviour
         if (tgtRot != setting_toggle.rotation.eulerAngles.z)
         {
 
-            setting_toggle.rotation = Quaternion.Lerp(setting_toggle.rotation,Quaternion.Euler(new Vector3(InitRotation.x,InitRotation.y,rotSpeed)),rotSpeed * Time.deltaTime);
+            setting_toggle.rotation = Quaternion.Lerp(setting_toggle.rotation, Quaternion.Euler(new Vector3(InitRotation.x, InitRotation.y, rotSpeed)), rotSpeed * Time.deltaTime);
             currDiff = newDiff;
         }
     }
     public void NextLevel()
     {
+        if (!menu_Mgr.Selection.isPlaying)
+        {
+            menu_Mgr.Selection.Play();
+        }
         currDiff++;
-        if (currDiff>3)
+        if (currDiff > 3)
         {
 
         }
