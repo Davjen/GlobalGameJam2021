@@ -36,7 +36,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8489055714791230605}
-  - component: {fileID: 8206165173167817788}
+  - component: {fileID: 1569967790802417347}
+  - component: {fileID: 5289638373899384677}
+  - component: {fileID: 6787504315316149621}
   m_Layer: 0
   m_Name: Platform3AirPodsPrefab
   m_TagString: Untagged
@@ -59,7 +61,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!114 &8206165173167817788
+--- !u!114 &1569967790802417347
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -72,6 +74,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Center: {fileID: 0}
+--- !u!65 &5289638373899384677
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8489055714791230604}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.179802, y: 1, z: 0.3}
+  m_Center: {x: 0.23602676, y: 0, z: 0}
+--- !u!65 &6787504315316149621
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8489055714791230604}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8489055715206348474
 GameObject:
   m_ObjectHideFlags: 0
