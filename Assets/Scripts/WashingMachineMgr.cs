@@ -37,7 +37,7 @@ public class WashingMachineMgr : MonoBehaviour
     private float washingMachineStopDuration;
     public float LoweringInternalCircleDuration=1;
     public float PlayerRepositioningDuration = 1;
-
+    private int levelDiff;
 
     //DurationSetByGameDesiner
     public float WashingMachineStopDuration;
@@ -72,7 +72,8 @@ public class WashingMachineMgr : MonoBehaviour
 
     private void Start()
     {
-        InitializeGame();
+        levelDiff = StaticSavingScript.LEVEL_DIFFICULTY;
+        InitializeGame(levelDiff);
         mainTheme.time = StaticSavingScript.MUSIC_TIMER_START;
         mainTheme.Play();
     }
@@ -81,30 +82,53 @@ public class WashingMachineMgr : MonoBehaviour
     //TRAMITE EVENT IMPOSTA LE VELOCITà DELLE ORBITE
 
 
-    public void InitializeGame() //livello di difficoltà --Implementare Switch--
+    public void InitializeGame(int value) //livello di difficoltà --Implementare Switch--
     {
-        //alla fine di tutto
-        switch (DifficultyLevel)
+
+//        DifficultyLevel = (Level)StaticSavingScript.LEVEL_DIFFICULTY;
+        if(value==1)
         {
-            case Level.Easy:
-                washingMachineStopDuration = 12;
-                gameTimeDuration = 300f;
-                PassTimerToHUD(gameTimeDuration, washingMachineStopDuration, true);
-                startGame = true;
-                break;
-            case Level.Medium:
-                washingMachineStopDuration = 8;
-                gameTimeDuration = 180f;
-                PassTimerToHUD(gameTimeDuration, washingMachineStopDuration, true);
-                startGame = true;
-                break;
-            case Level.Hard:
-                washingMachineStopDuration = 4;
-                gameTimeDuration = 120f;
-                PassTimerToHUD(gameTimeDuration, washingMachineStopDuration, true);
-                startGame = true;   
-                break;
+            washingMachineStopDuration = 12;
+            gameTimeDuration = 300f;
+            PassTimerToHUD(gameTimeDuration, washingMachineStopDuration, true);
+            startGame = true;
         }
+        if(value==2)
+        {
+            washingMachineStopDuration = 8;
+            gameTimeDuration = 180f;
+            PassTimerToHUD(gameTimeDuration, washingMachineStopDuration, true);
+            startGame = true;
+        }
+        if(value==3)
+        {
+            washingMachineStopDuration = 4;
+            gameTimeDuration = 120f;
+            PassTimerToHUD(gameTimeDuration, washingMachineStopDuration, true);
+            startGame = true;
+        }
+        //alla fine di tutto
+        //switch (DifficultyLevel)
+        //{
+        //    case Level.Easy:
+        //        washingMachineStopDuration = 12;
+        //        gameTimeDuration = 300f;
+        //        PassTimerToHUD(gameTimeDuration, washingMachineStopDuration, true);
+        //        startGame = true;
+        //        break;
+        //    case Level.Medium:
+        //        washingMachineStopDuration = 8;
+        //        gameTimeDuration = 180f;
+        //        PassTimerToHUD(gameTimeDuration, washingMachineStopDuration, true);
+        //        startGame = true;
+        //        break;
+        //    case Level.Hard:
+        //        washingMachineStopDuration = 4;
+        //        gameTimeDuration = 120f;
+        //        PassTimerToHUD(gameTimeDuration, washingMachineStopDuration, true);
+        //        startGame = true;   
+        //        break;
+        //}
     }
 
     
@@ -188,7 +212,7 @@ public class WashingMachineMgr : MonoBehaviour
 
     void Update()
     {
-        InitializeGame();
+        InitializeGame(levelDiff);
              
         if (startGame)
         {

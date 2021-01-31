@@ -21,7 +21,7 @@ public class HUD_Mgr : MonoBehaviour
         lifes = new List<Image>();
         Image[] images;
         images = lifeGroup.GetComponentsInChildren<Image>();
-        Debug.Log(images.Length);
+
         foreach (Image item in images)
         {
             lifes.Add(item);
