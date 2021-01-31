@@ -20,7 +20,7 @@ public class WashingMachineMgr : MonoBehaviour
     public Level DifficultyLevel= Level.None;
     public float GValue;
     public bool PLAYSOUND;
-
+    public AudioSource mainTheme;
 
     //UI
     public Transform winLoseUI;
@@ -70,7 +70,12 @@ public class WashingMachineMgr : MonoBehaviour
     public static bool GameEnd { get; private set; }
 
 
-
+    private void Start()
+    {
+        InitializeGame();
+        mainTheme.time = StaticSavingScript.MUSIC_TIMER_START;
+        mainTheme.Play();
+    }
 
 
     //TRAMITE EVENT IMPOSTA LE VELOCITà DELLE ORBITE
