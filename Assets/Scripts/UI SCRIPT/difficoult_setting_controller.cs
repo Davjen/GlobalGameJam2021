@@ -21,10 +21,10 @@ public class difficoult_setting_controller : MonoBehaviour
         InitRotation = new Vector3(setting_toggle.rotation.x, setting_toggle.rotation.y, setting_toggle.rotation.z);
         tgtRot = diff3;
         currDiff = 1;
+        setDiff_1();
     }
     public void setDiff_1()
     {
-        Debug.Log("ciao");
         tgtRot = diff1;
         menu_Mgr.level = 1;
         newDiff = 1;
@@ -47,8 +47,8 @@ public class difficoult_setting_controller : MonoBehaviour
     {
         if (tgtRot != setting_toggle.rotation.eulerAngles.z)
         {
-
-            setting_toggle.rotation = Quaternion.Lerp(setting_toggle.rotation, Quaternion.Euler(new Vector3(InitRotation.x, InitRotation.y, rotSpeed)), rotSpeed * Time.deltaTime);
+            Debug.Log("ciao");
+            setting_toggle.rotation = Quaternion.Lerp(setting_toggle.rotation, Quaternion.Euler(new Vector3(InitRotation.x, InitRotation.y, tgtRot)), rotSpeed * Time.deltaTime);
             currDiff = newDiff;
         }
     }
@@ -61,7 +61,27 @@ public class difficoult_setting_controller : MonoBehaviour
         currDiff++;
         if (currDiff > 3)
         {
+            currDiff = 1;
+        }
+        SetLevel(currDiff);
 
+        
+    }
+    private void SetLevel(int level)
+    {
+        switch (level)
+        {
+            case 1:
+                setDiff_1();
+                break;
+            case 2:
+                setDiff_2();
+                break;
+            case 3:
+                setDiff_3();
+                break;
+            default:
+                break;
         }
     }
 
