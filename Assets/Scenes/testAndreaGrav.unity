@@ -487,6 +487,7 @@ MonoBehaviour:
   image: {fileID: 648720926}
   test: 0
   currentTime: 0
+  ps: {fileID: 0}
 --- !u!4 &280748882
 Transform:
   m_ObjectHideFlags: 0
@@ -862,7 +863,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 508286636}
   m_LocalRotation: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: -2.91, y: 0, z: 0}
+  m_LocalPosition: {x: 5.07, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1481374665}
@@ -1355,16 +1356,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dfcaca9dad5f4f42afbd4e4b4570266, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Player: {fileID: 0}
   Platform: []
   Orbits: []
+  InternalCircleLowHandler: {fileID: 0}
+  DifficultyLevel: 3
   GValue: 8
-  ApplyGAll: 0
-  RemoveGForce: 0
   PLAYSOUND: 0
+  PlatformPositioningDuration: 1
+  LoweringInternalCircleDuration: 1
+  PlayerRepositioningDuration: 1
   startGame: 0
-  StopMotionTrigger: 0
-  TimerIsOver: 0
-  TimeOfPlatformPositioning: 1
 --- !u!4 &1200456697
 Transform:
   m_ObjectHideFlags: 0
@@ -1506,8 +1508,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1369632406}
-  m_LocalRotation: {x: 0.5344983, y: -0.4646574, z: 0.5193239, w: 0.47823408}
-  m_LocalPosition: {x: 8.294746, y: 9.324336, z: -0.6699233}
+  m_LocalRotation: {x: 0.5262254, y: -0.4683595, z: 0.5511191, w: 0.447207}
+  m_LocalPosition: {x: 3.6483116, y: 38.23887, z: -9.693975}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1795,7 +1797,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1481374662}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aaee913999a578142889cbe4da46b9ce, type: 3}
   m_Name: 
@@ -1803,7 +1805,6 @@ MonoBehaviour:
   Mgr: {fileID: 1200456696}
   GravityOn: 0
   OriginGForce: {fileID: 527005943}
-  audioSource: {fileID: 0}
 --- !u!114 &1481374664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1828,7 +1829,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1481374662}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 10.24, y: 0, z: -0.18}
+  m_LocalPosition: {x: 10.24, y: 0, z: -8.53}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 508286642}
@@ -1842,7 +1843,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1481374662}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a86b5d0879f10c9419162c8ed362093b, type: 3}
   m_Name: 
@@ -1959,7 +1960,7 @@ ParticleSystem:
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 0
+    scalar: 1
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -2009,7 +2010,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
@@ -2019,7 +2020,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 1
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -2504,7 +2505,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 1000
+    maxNumParticles: 5
     size3D: 0
     rotation3D: 0
     gravityModifier:
@@ -2569,7 +2570,7 @@ ParticleSystem:
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
     donutRadius: 0.2
-    m_Position: {x: -1.92, y: 0, z: -0.48}
+    m_Position: {x: 5.07, y: 0, z: -0.48}
     m_Rotation: {x: -2.46, y: 90, z: 0}
     m_Scale: {x: 1, y: 1, z: 1}
     placementMode: 0
@@ -3974,7 +3975,7 @@ ParticleSystem:
         m_RotationOrder: 4
     inWorldSpace: 0
   InheritVelocityModule:
-    enabled: 0
+    enabled: 1
     m_Mode: 0
     m_Curve:
       serializedVersion: 2

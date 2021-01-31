@@ -54,7 +54,7 @@ public class PlatformScript : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.tag == "WashingMachine")
+        if (other.transform.tag == "WashingMachineExternal")
         {
             SetGravity(false);
         }
@@ -79,16 +79,16 @@ public class PlatformScript : MonoBehaviour
             Vector3 Dir = Center.position - transform.position;
             transform.rotation = Quaternion.LookRotation(Dir);
             timer += Time.deltaTime;
-            float fraction = timer / Owner.TimeOfPlatformPositioning;
+            float fraction = timer / Owner.PlatformPositioningDuration;
             transform.position = Vector3.Slerp(PreviousPosition, PlatformNewDestination, fraction);
-            if (timer>= Owner.TimeOfPlatformPositioning)
+            if (timer>= Owner.PlatformPositioningDuration)
             {
                 timer = 0;
                 transform.position = PlatformNewDestination;
                 myColliders[0].enabled = true;
                 myColliders[1].enabled = true;
                 StartSetPosition(false);
-                Owner.RestartWashingMachine();
+
             }
         }
     }

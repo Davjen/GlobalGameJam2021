@@ -4,62 +4,83 @@ using UnityEditor.Events;
 using UnityEngine;
 using UnityEngine.Events;
 
-public enum Level { Easy,Medium,Hard}
+public enum Level { Easy,Medium,Hard,None}
 [SerializeField]
 public class ActivatePlatformsEvent : UnityEvent<bool> { }
 public class SetPlatformPosition : UnityEvent<bool> { }
 public class WashingMachineMgr : MonoBehaviour
 {
-
+    //Public Values
+    public Transform Player;
     public List<PlatformScript> Platform = new List<PlatformScript>();
     public List<AutorRotateOrbit> Orbits;
-
+    public Transform InternalCircleLowHandler;
+    public Level DifficultyLevel= Level.None;
     public float GValue;
-    public bool ApplyGAll, RemoveGForce;
     public bool PLAYSOUND;
+
+    //Events
     public ActivatePlatformsEvent GPlatformsEvent;
     public SetPlatformPosition SendPositionEvent;
-    private float centrifugaNotMovingTimer;
-    private float rotationSpeed;
+
+    //Durations
+    public float PlatformPositioningDuration = 1;
+    private float gameTimeDuration;
+    private float washingMachineStopDuration;
+    public float LoweringInternalCircleDuration=1;
+    public float PlayerRepositioningDuration = 1;
+
+    //Timers
+    private float gameTimeTimer;
+    private float washingMachineStopTimer;
+    private float loweringInternalCircleTimer;
+    private float playerRepositioningTimer;
+
+
+    //Bools
     public bool startGame;
     bool startOrbiting;
     bool platformFall;
-    public bool StopMotionTrigger;
-    public bool TimerIsOver;
-    public float TimeOfPlatformPositioning = 1;
+    public static bool StopMotionTrigger;
+    private bool lowCircle;
+    bool raiseCircle;
+    private bool playerRepositioning;
 
+    //Handlers positions
+    Vector3 internalCircleStartPosition;
+    Vector3 playerHandlerLastPos;
+     Vector3 playerLastPos;
 
     List<Vector3> positionList = new List<Vector3>();
-    private float centrifugaNotMovingTimerValue;
-    private float gameTimeLenghtValue;
+
+
 
 
 
     //TRAMITE EVENT IMPOSTA LE VELOCITà DELLE ORBITE
 
 
-    public void InitializeGame(int diffLevel) //livello di difficoltà --Implementare Switch--
+    public void InitializeGame() //livello di difficoltà --Implementare Switch--
     {
         //alla fine di tutto
-        switch ((Level)diffLevel)
+        switch (DifficultyLevel)
         {
             case Level.Easy:
-                centrifugaNotMovingTimerValue = 30f;
-                gameTimeLenghtValue = 180f;
-                centrifugaNotMovingTimer = centrifugaNotMovingTimerValue;
+                washingMachineStopDuration = 30f;
+                gameTimeDuration = 180f;
+                startGame = true;
                 break;
             case Level.Medium:
-                centrifugaNotMovingTimerValue = 20f;
-                gameTimeLenghtValue = 160f;
-                centrifugaNotMovingTimer = centrifugaNotMovingTimerValue;
+                washingMachineStopDuration = 20f;
+                gameTimeDuration = 160f;
+                startGame = true;
                 break;
             case Level.Hard:
-                centrifugaNotMovingTimerValue = 15f;
-                gameTimeLenghtValue = 120f;
-                centrifugaNotMovingTimer = centrifugaNotMovingTimerValue;
+                washingMachineStopDuration = 15f;
+                gameTimeDuration = 120f;
+                startGame = true;   
                 break;
         }
-        startGame = true;
     }
 
     
@@ -82,11 +103,25 @@ public class WashingMachineMgr : MonoBehaviour
 
     }
 
+    public static void StopMotion()
+    {
+        StopMotionTrigger = true;
+    }
+
     public void RestartWashingMachine()
     {
         startOrbiting = false;
         platformFall = false;
-        StopMotionTrigger = false;
+
+    }
+
+    internal void RegisterPlayerHandlerPos()
+    {
+        playerHandlerLastPos = Player.GetChild(1).position;
+        playerLastPos = Player.transform.position;
+        playerRepositioning = true;
+        Player.GetComponent<InputWithRB>().RecordInput(false);
+        //Player.GetComponent<InputWithRB>().gravOn=false;
 
     }
 
@@ -94,7 +129,10 @@ public class WashingMachineMgr : MonoBehaviour
     {
         GPlatformsEvent = new ActivatePlatformsEvent();
         SendPositionEvent = new SetPlatformPosition();
+
         AutorotateOrbits(false);
+
+        internalCircleStartPosition = Orbits[0].transform.position;
 
         for (int i = 0; i < Platform.Count; i++)
         {
@@ -107,6 +145,7 @@ public class WashingMachineMgr : MonoBehaviour
 
     void Update()
     {
+        InitializeGame();
              
         if (startGame)
         {
@@ -117,35 +156,103 @@ public class WashingMachineMgr : MonoBehaviour
             }
 
             TickEndGame();
+
+            //Script to End Game
             if(EndGame())
             {
-                //FINE DEL GIOCO.
+                Debug.Log("Scene Ended");
             }
+
+            //Raise Internal Circle when searching time is over
+            if (raiseCircle)
+                MovingInternalCircle(false);
+
+            //Reposition Player when searching time is over
+            if (playerRepositioning)
+                ReposiotioningPlayer();
+
+
             //METTE IN MOTO LE PIATTAFORME
             if (StopMotionTrigger)//QUANDO IL PLAYER RAGGIUNGE IL CENTRO DELLA LAVATRICE E TRIGGERA LO STOP
             {
-                //FAI CADERE LE PIATTAFORME.
-
+                //Let platforms fall
                 if (!platformFall)
                 {
                     GPlatformsEvent.Invoke(true);
                     platformFall = true;
                     AutorotateOrbits(false);
-                    //Internal circle disappearing animation to add
+                    LowInternalCircle(true);
                 }
+
                 Tick();
 
-                if (/*TimeIsOver()*/ TimerIsOver) //scade IL TEMPO DELLA CENTRIFUGA FERMA.
+                //Low Internal circle when Central Button is pressed
+                if (lowCircle)
+                    MovingInternalCircle(true);
+
+                //Restarts washing machine
+                if (TimeIsOver()) 
                 {
                     ResetTimer();
-                    TimerIsOver = false;
-                    //RIPOSIZIONARE LE PIATTAFORME ALLE POSIZIONI STABILITE.
-                    //GPlatformsEvent.Invoke(false);
+                    //Invokes platforms repositioning
                     SendPositionEvent.Invoke(true);
+                    raiseCircle = true;
+                    RegisterPlayerHandlerPos();
+                    StopMotionTrigger = false;
 
                 }
             }
         }
+    }
+
+    private void ReposiotioningPlayer()
+    {
+        //Lerps to PlayerHandler
+        playerRepositioningTimer += Time.deltaTime;
+        float fraction = playerRepositioningTimer / PlayerRepositioningDuration;
+        Player.transform.position = Vector3.Lerp(playerLastPos, playerHandlerLastPos, fraction);
+        if (playerRepositioningTimer >= PlayerRepositioningDuration)
+        {
+            Player.transform.position = playerHandlerLastPos;
+            playerRepositioningTimer = 0;
+            playerRepositioning = false;
+
+        }
+    }
+
+    private void MovingInternalCircle(bool low)
+    {
+        //Lows or Raises internal circle, depending on the value of low
+        Vector3 startPos = low ? internalCircleStartPosition : InternalCircleLowHandler.position;
+        Vector3 endPos = low ?  InternalCircleLowHandler.position : internalCircleStartPosition;
+
+        loweringInternalCircleTimer += Time.deltaTime;
+            float fraction = loweringInternalCircleTimer / LoweringInternalCircleDuration;
+            Orbits[0].transform.position = Vector3.Lerp(startPos, endPos, fraction);
+        if (loweringInternalCircleTimer >= LoweringInternalCircleDuration)
+        {
+            Orbits[0].transform.position = endPos;
+            loweringInternalCircleTimer = 0;
+            if (low)
+                lowCircle = false;
+            else
+            {
+                raiseCircle = false;
+                //realeases player and restarts washing machine
+                Player.GetComponent<InputWithRB>().RecordInput(true);
+                RestartWashingMachine();
+                ResetTimer();
+
+
+            }
+
+        }
+
+    }
+
+    private void LowInternalCircle(bool b)
+    {
+        lowCircle = b;
     }
 
     void AutorotateOrbits(bool b)
@@ -176,25 +283,26 @@ public class WashingMachineMgr : MonoBehaviour
 
     void ResetTimer()
     {
-        if (centrifugaNotMovingTimer >= 0)
-            centrifugaNotMovingTimer = centrifugaNotMovingTimerValue;
+        if (washingMachineStopTimer >= washingMachineStopDuration)
+            washingMachineStopTimer = 0;
     }
     void Tick()
     {
-        centrifugaNotMovingTimer -= Time.deltaTime;
+        washingMachineStopTimer+= Time.deltaTime;
     }
     void TickEndGame()
     {
-        gameTimeLenghtValue -= Time.deltaTime;
+        gameTimeTimer += Time.deltaTime;
     }
     bool TimeIsOver()
     {
-        return centrifugaNotMovingTimer <= 0;
+        return washingMachineStopTimer >= washingMachineStopDuration;
     }
 
     bool EndGame()
     {
-        return gameTimeLenghtValue <= 0;
+        return gameTimeTimer <= gameTimeDuration;
     }
 
 }
+

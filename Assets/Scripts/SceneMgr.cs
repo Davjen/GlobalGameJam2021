@@ -13,15 +13,25 @@ public class SceneMgr : MonoBehaviour
     AudioSource audioSource;
     public float test;
     public float currentTime;
+    public ParticleSystem ps;
+    float particlestartPos;
+    float particleleftPos;
+    private bool positioning;
+    private bool positioningleft;
 
+    
 
     // Start is called before the first frame update
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-
+        //particlestartPos = ps.shape.position.x;
+        //particleleftPos = 4.04f;
     }
-
+    private void Awake()
+    {
+        
+    }
     void PlayMusic()
     {
         audioSource.Play();
@@ -44,15 +54,31 @@ public class SceneMgr : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.C))
         {
+            GravityAffectedScript.testAction.Invoke();
+            //audioSource.time = test;
+            
 
-            audioSource.time = test;
-
-            PlayMusic();
+            //PlayMusic();
+          
         }
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            fade = true;
+            //if (positioning)
+            //{
+            //    positioning = false;
+            //    particlestartPos = ps.shape.position.x;
+            //}
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            //if(positioningleft)
+            //{
+            //    positioningleft = false;
+            //    ps.shape.position = new Vector2(particlestartPos, ps.shape.position.y);
+            //    ps.shape.
+            //}
         }
         if (fade)
         {
@@ -63,7 +89,7 @@ public class SceneMgr : MonoBehaviour
             {
                 StaticSavingScript.MUSIC_TIMER_START = audioSource.time;
                 audioSource.Stop();
-            SceneManager.LoadScene("MattiaScene");
+                SceneManager.LoadScene("MattiaScene");
             }
         }
     }
