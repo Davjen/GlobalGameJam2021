@@ -1,26 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Menu_Mgr : MonoBehaviour
 {
     //Animazione Bottoni
-    //public Animator anim;
+
     private bool Audio_On = true;
     private int IDLE_Hashe;
 
     //Animazione Camera
     public bool startCameraAnim;
     public Transform CameraRef;
-    public Transform tgtCamera;
     public float speed = 10f;
     public float TranslateTimer, RotationTimer;
+    public Canvas Menu;
+    public Image startMenu;
 
     public List<Transform> TgTCameraPositions;
 
     public int level = 1;
 
-    public AudioSource MusicTheme;
+    public AudioSource MusicTheme,MouseOver,Selection;
 
     Vector3 tgTPosition,oldPosition;
     Quaternion tgtRotation, oldRotation;
@@ -28,24 +30,28 @@ public class Menu_Mgr : MonoBehaviour
     float lerpTimer;
     int counterPos = 1;
     bool doingAnimation;
+    private bool startToFade;
+    float alpha;
+    public float alphaMultiplier=2;
 
 
     // Start is called before the first frame update
     void Start()
     {
 
+        alpha = startMenu.color.a;
         oldPosition = CameraRef.position;
         oldRotation = CameraRef.rotation;
-        //IDLE_Hashe = Animator.StringToHash("IDLE");
+
     }
     public void AudioOn()
     {
         //wait for end animation
-        //AnimatorStateInfo animInfo = anim.GetCurrentAnimatorStateInfo(0);
-        if (!Audio_On /*&& animInfo.IsName("IDLE")*/)
+       
+        if (!Audio_On)
         {
             Audio_On = true;
-            //anim.SetTrigger("on");
+            
             if (!MusicTheme.isPlaying)
                 MusicTheme.Play();
         }
@@ -54,12 +60,12 @@ public class Menu_Mgr : MonoBehaviour
     public void AudioOff()
     {
         //wait for end animation
-        //AnimatorStateInfo animInfo = anim.GetCurrentAnimatorStateInfo(0);
-        if (Audio_On /*&& animInfo.IsName("IDLE")*/)
+
+        if (Audio_On)
         {
             Audio_On = false;
             MusicTheme.Stop();
-            //anim.SetTrigger("off");
+
 
         }
     }
@@ -74,8 +80,22 @@ public class Menu_Mgr : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(startToFade)
+        {
+            alpha -= alphaMultiplier*Time.deltaTime;
+            startMenu.color = new Color(startMenu.color.r, startMenu.color.g, startMenu.color.b, alpha);
+            if(startMenu.color.a<=0)
+            {
+
+                Debug.Log("pippo");
+                startCameraAnim = true;
+                Menu.enabled = false;
+                startToFade=false;
+            }
+        }
         if (startCameraAnim)
         {
+            Debug.Log("ciao");
             if (!doingAnimation && counterPos < TgTCameraPositions.Count - 1)
             {
                 doingAnimation = true;
@@ -113,5 +133,23 @@ public class Menu_Mgr : MonoBehaviour
     Quaternion PickRotation(int index)
     {
         return TgTCameraPositions[index].rotation;
+    }
+
+    public void StartAnimation()
+    {
+        PlayClick();
+        startToFade = true;
+    }
+
+    public void PlayOnMouseOver()
+    {
+        if(!MouseOver.isPlaying)
+        MouseOver.Play();
+    }
+
+    public void PlayClick()
+    {
+        if (!Selection.isPlaying)
+            Selection.Play();
     }
 }

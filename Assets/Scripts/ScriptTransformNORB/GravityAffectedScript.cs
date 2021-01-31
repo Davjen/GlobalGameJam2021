@@ -15,7 +15,7 @@ public class GravityAffectedScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gSpeed = Mgr.GValue;
+        //gSpeed = Mgr.GValue;
         
     }
     private void Awake()
