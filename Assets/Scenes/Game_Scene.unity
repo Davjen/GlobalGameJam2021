@@ -984,6 +984,7 @@ GameObject:
   - component: {fileID: 188065351}
   - component: {fileID: 188065350}
   - component: {fileID: 188065349}
+  - component: {fileID: 188065352}
   m_Layer: 5
   m_Name: AudioSelector
   m_TagString: Untagged
@@ -1055,9 +1056,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1109834363}
+      - m_Target: {fileID: 188065352}
         m_TargetAssemblyTypeName: difficoult_setting_controller, Assembly-CSharp
-        m_MethodName: NextLevel
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1105,6 +1106,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 188065347}
   m_CullTransparentMesh: 1
+--- !u!114 &188065352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 188065347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4d84979229fce4382140f35c915eda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0
+  onAngle: 0
+  offAngle: 0
+  button: {fileID: 0}
+  initAngle: {x: 0, y: 0, z: 0}
+  Menu: {fileID: 0}
 --- !u!1 &200522453
 GameObject:
   m_ObjectHideFlags: 0
@@ -1964,9 +1983,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1109834363}
-        m_TargetAssemblyTypeName: difficoult_setting_controller, Assembly-CSharp
-        m_MethodName: NextLevel
+      - m_Target: {fileID: 51523644}
+        m_TargetAssemblyTypeName: Menu_Mgr, Assembly-CSharp
+        m_MethodName: StartGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3000,9 +3019,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1109834363}
-        m_TargetAssemblyTypeName: difficoult_setting_controller, Assembly-CSharp
-        m_MethodName: NextLevel
+      - m_Target: {fileID: 51523644}
+        m_TargetAssemblyTypeName: Menu_Mgr, Assembly-CSharp
+        m_MethodName: QuitGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3569,7 +3588,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1558071050}
-  - component: {fileID: 1558071051}
   m_Layer: 0
   m_Name: Audio_Selector
   m_TagString: Untagged
@@ -3592,21 +3610,6 @@ Transform:
   m_Father: {fileID: 8025090992278619440}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 26.336, y: 0, z: -40.479}
---- !u!114 &1558071051
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1558071049}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b4d84979229fce4382140f35c915eda, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 4
-  onAngle: 130.619
-  offAngle: -40.479
 --- !u!1 &1669647915
 GameObject:
   m_ObjectHideFlags: 0
