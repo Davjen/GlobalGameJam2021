@@ -20,6 +20,7 @@ public class InputWithRB : MonoBehaviour
     bool jump;
     bool grounded;
     float fwd;
+    Animator anim;
     Quaternion platformRot;
     //float colliderSize;
     bool floating;
@@ -32,7 +33,9 @@ public class InputWithRB : MonoBehaviour
 
     void Start()
     {
+
         turnRight = true;
+        anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody>();
         //colliderSize = GetComponentInChildren<CapsuleCollider>().bounds.extents.z;
         //Debug
@@ -45,6 +48,8 @@ public class InputWithRB : MonoBehaviour
     {
         if (recordInput)
         {
+            anim.SetBool("Walking", true);
+            
             if (fwd > 0)
             {
                 if (!turnLeft)
@@ -65,6 +70,10 @@ public class InputWithRB : MonoBehaviour
 
                 }
             }
+            else
+            {
+                anim.SetBool("Walking", false);
+            }
 
 
             Vector3 dir = (center.position - transform.position).normalized;
@@ -81,7 +90,7 @@ public class InputWithRB : MonoBehaviour
 
 
            
-
+            
            
             //add translation
             rb.AddForce(transform.up * fwd);
@@ -93,6 +102,7 @@ public class InputWithRB : MonoBehaviour
 
                 rb.AddForce(dir * jumpForce, ForceMode.Impulse);
                 jump = false;
+                anim.SetTrigger("Jump");
             }
 
             if (!floating)
@@ -155,7 +165,8 @@ public class InputWithRB : MonoBehaviour
 
         if ((myDist -0.1f <= platformDist) || collision.gameObject.tag == "WashingMachineInternal"|| collision.gameObject.tag == "WashingMachineExternal")
         {
-            
+
+            //anim.SetTrigger("EndJump");
             //currentScale = transform.localScale;
             gravOn = false;
             grounded = true;
@@ -165,13 +176,17 @@ public class InputWithRB : MonoBehaviour
                 floating = false;
                 LookCenter();
                 transform.SetParent(collision.transform);
+                anim.SetTrigger("EndJump");
+
 
             }
             else
             {
                 transform.SetParent(collision.transform.parent);
+                anim.SetTrigger("EndJump");
+
             }
-           
+
         }
 
     }
