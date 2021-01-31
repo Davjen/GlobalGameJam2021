@@ -87,7 +87,7 @@ public class Menu_Mgr : MonoBehaviour
             if(startMenu.color.a<=0)
             {
 
-                Debug.Log("pippo");
+                
                 startCameraAnim = true;
                 Menu.enabled = false;
                 startToFade=false;
@@ -95,7 +95,7 @@ public class Menu_Mgr : MonoBehaviour
         }
         if (startCameraAnim)
         {
-            Debug.Log("ciao");
+            
             if (!doingAnimation && counterPos < TgTCameraPositions.Count - 1)
             {
                 doingAnimation = true;
