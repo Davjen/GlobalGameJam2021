@@ -2120,7 +2120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HUD_Mgr: {fileID: 902730505}
-  Player: {fileID: 0}
+  Player: {fileID: 359930809}
   Platform:
   - {fileID: 1924487023}
   - {fileID: 1759933104}
@@ -2299,6 +2299,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d77c6c657371248408f25af0a0eac139, type: 3}
+--- !u!4 &359930809 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7560147870426116496, guid: d77c6c657371248408f25af0a0eac139, type: 3}
+  m_PrefabInstance: {fileID: 359930808}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &375726109
 GameObject:
   m_ObjectHideFlags: 0
