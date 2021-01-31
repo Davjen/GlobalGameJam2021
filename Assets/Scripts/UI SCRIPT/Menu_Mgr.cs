@@ -44,6 +44,10 @@ public class Menu_Mgr : MonoBehaviour
         oldRotation = CameraRef.rotation;
 
     }
+    public void QuitGame()
+    {
+
+    }
     public void AudioOn()
     {
         //wait for end animation
@@ -74,7 +78,7 @@ public class Menu_Mgr : MonoBehaviour
         StaticSavingScript.LEVEL_DIFFICULTY = level;
         StaticSavingScript.MUSIC_TIMER_START = MusicTheme.time;
 
-        startCameraAnim = true;
+        //startCameraAnim = true;
     }
 
     // Update is called once per frame
