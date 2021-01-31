@@ -65,7 +65,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6612229976162017373}
-  - component: {fileID: 7010863990857488105}
+  - component: {fileID: 3380929930094824853}
+  - component: {fileID: 8345487944196107277}
+  - component: {fileID: 8681099207682606851}
   m_Layer: 0
   m_Name: Platform8LegoPrefab
   m_TagString: Untagged
@@ -88,7 +90,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!114 &7010863990857488105
+--- !u!114 &3380929930094824853
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -101,6 +103,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Center: {fileID: 0}
+--- !u!65 &8345487944196107277
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7186199790191885116}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 0.5}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &8681099207682606851
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7186199790191885116}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &4332068494230817534
 PrefabInstance:
   m_ObjectHideFlags: 0

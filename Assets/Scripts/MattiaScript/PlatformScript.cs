@@ -54,6 +54,7 @@ public class PlatformScript : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("ho colliso con qualcosa e sono" + gameObject.name);
         if (other.transform.tag == "WashingMachineExternal")
         {
             SetGravity(false);

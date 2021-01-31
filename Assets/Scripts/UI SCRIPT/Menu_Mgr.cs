@@ -19,20 +19,25 @@ public class Menu_Mgr : MonoBehaviour
     public Image startMenu;
 
     public List<Transform> TgTCameraPositions;
+    public Transform lastPosition;
 
     public int level = 1;
 
-    public AudioSource MusicTheme,MouseOver,Selection;
+    public AudioSource MusicTheme, MouseOver, Selection;
 
-    Vector3 tgTPosition,oldPosition;
+    Vector3 tgTPosition, oldPosition;
     Quaternion tgtRotation, oldRotation;
-    
+
     float lerpTimer;
     int counterPos = 1;
     bool doingAnimation;
-    public bool startToFade;
+    bool startToFade;
     float alpha;
-    public float alphaMultiplier=2;
+    public float alphaMultiplier = 2;
+    public float CountDownToMenu = 1.5f;
+    private bool canProceed;
+    bool STOP;
+
 
 
     // Start is called before the first frame update
@@ -44,14 +49,18 @@ public class Menu_Mgr : MonoBehaviour
         oldRotation = CameraRef.rotation;
 
     }
+    public void QuitGame()
+    {
+
+    }
     public void AudioOn()
     {
         //wait for end animation
-       
+        PlayClick();
         if (!Audio_On)
         {
             Audio_On = true;
-            
+
             if (!MusicTheme.isPlaying)
                 MusicTheme.Play();
         }
@@ -59,6 +68,7 @@ public class Menu_Mgr : MonoBehaviour
     }
     public void AudioOff()
     {
+        PlayClick();
         //wait for end animation
 
         if (Audio_On)
@@ -71,58 +81,93 @@ public class Menu_Mgr : MonoBehaviour
     }
     public void StartGame()
     {
+        PlayClick();
         StaticSavingScript.LEVEL_DIFFICULTY = level;
         StaticSavingScript.MUSIC_TIMER_START = MusicTheme.time;
 
-        startCameraAnim = true;
+        //LOAD.SCENA DI GIOCO! 
+        //startCameraAnim = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(startToFade)
+        if (startToFade)
         {
-            alpha -= alphaMultiplier*Time.deltaTime;
+            alpha -= alphaMultiplier * Time.deltaTime;
             startMenu.color = new Color(startMenu.color.r, startMenu.color.g, startMenu.color.b, alpha);
-            if(startMenu.color.a<=0)
+            if (startMenu.color.a <= 0)
             {
 
-                
+
                 startCameraAnim = true;
                 Menu.enabled = false;
-                startToFade=false;
+                startToFade = false;
             }
         }
         if (startCameraAnim)
         {
-            
-            if (!doingAnimation && counterPos < TgTCameraPositions.Count - 1)
+
+            if (!doingAnimation && counterPos < TgTCameraPositions.Count)
             {
                 doingAnimation = true;
                 tgTPosition = PickPositions(counterPos);
                 tgtRotation = PickRotation(counterPos);
             }
+
+            //if (canProceed && !doingAnimation)
+            //{
+            //    if (counterPos < TgTCameraPositions.Count)
+            //    {
+
+            //        Debug.LogError("canproceed");
+            //        tgTPosition = PickPositions(counterPos);
+            //        tgtRotation = PickRotation(counterPos);
+            //        doingAnimation = true;
+            //        lerpTimer = 0;
+            //    }
+            //}
+            if(canProceed)
+            {
+                tgTPosition = lastPosition.position;
+                tgtRotation = lastPosition.rotation;
+                STOP = true;
+            }
+
             lerpTimer += Time.deltaTime;
             CameraRef.position = Vector3.Slerp(oldPosition, tgTPosition, lerpTimer / TranslateTimer);
             CameraRef.rotation = Quaternion.Slerp(oldRotation, tgtRotation, lerpTimer / RotationTimer);
             NextAnimation();
-            if(counterPos <TgTCameraPositions.Count - 1)//SI TROVA DAVANTI AL MENù
-            {
-
-            }
+            //if (counterPos > TgTCameraPositions.Count - 1)//SI TROVA DAVANTI AL MENù
+            //{
+            //    Debug.Log("counterPos");
+            //    CountDownToMenu -= Time.deltaTime;
+            //    if (CountDownToMenu <= 0)
+            //    {
+            //        canProceed = true;
+            //    }
+            //}
         }
     }
 
     private void NextAnimation()
     {
-        if ((lerpTimer / TranslateTimer >= 1) && (lerpTimer / RotationTimer >= 1))
+        if ((lerpTimer / TranslateTimer >= 1) && (lerpTimer / RotationTimer >= 1)&& counterPos < TgTCameraPositions.Count &&!STOP)
         {
+            Debug.Log("c");
             oldPosition = tgTPosition;
             oldRotation = tgtRotation;
             lerpTimer = 0;
             counterPos++;
             doingAnimation = false;
         }
+        if(((lerpTimer / TranslateTimer >= 1) && (lerpTimer / RotationTimer >= 1) && counterPos == TgTCameraPositions.Count)&&!STOP)
+        {
+            canProceed = true;
+            lerpTimer = 0;
+        }
+
+       
     }
 
     Vector3 PickPositions(int index)
@@ -143,8 +188,8 @@ public class Menu_Mgr : MonoBehaviour
 
     public void PlayOnMouseOver()
     {
-        if(!MouseOver.isPlaying)
-        MouseOver.Play();
+        if (!MouseOver.isPlaying)
+            MouseOver.Play();
     }
 
     public void PlayClick()
