@@ -56,7 +56,7 @@ public class Menu_Mgr : MonoBehaviour
     public void AudioOn()
     {
         //wait for end animation
-
+        PlayClick();
         if (!Audio_On)
         {
             Audio_On = true;
@@ -68,6 +68,7 @@ public class Menu_Mgr : MonoBehaviour
     }
     public void AudioOff()
     {
+        PlayClick();
         //wait for end animation
 
         if (Audio_On)
@@ -80,6 +81,7 @@ public class Menu_Mgr : MonoBehaviour
     }
     public void StartGame()
     {
+        PlayClick();
         StaticSavingScript.LEVEL_DIFFICULTY = level;
         StaticSavingScript.MUSIC_TIMER_START = MusicTheme.time;
 
