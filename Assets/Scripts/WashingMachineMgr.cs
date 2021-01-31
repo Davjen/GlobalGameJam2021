@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor.Events;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public enum Level { Easy,Medium,Hard,None}
 [SerializeField]
@@ -18,6 +19,12 @@ public class WashingMachineMgr : MonoBehaviour
     public Level DifficultyLevel= Level.None;
     public float GValue;
     public bool PLAYSOUND;
+
+
+    //UI
+    public Image winLoseUI;
+    public Sprite win;
+    public Sprite lose;
 
     //Events
     public ActivatePlatformsEvent GPlatformsEvent;
@@ -303,6 +310,18 @@ public class WashingMachineMgr : MonoBehaviour
     bool TimeIsOver()
     {
         return washingMachineStopTimer >= washingMachineStopDuration;
+    }
+    public void BackToMenu()
+    {
+        //LOAD MENU SCENE
+    }
+    public void YouWin()
+    {
+        winLoseUI.sprite = win;
+    }
+    public void YouLose()
+    {
+        winLoseUI.sprite = lose;
     }
 
     bool EndGame()
