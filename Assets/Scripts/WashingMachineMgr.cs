@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Events;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public enum Level { Easy,Medium,Hard,None}
@@ -12,6 +12,7 @@ public class SetPlatformPosition : UnityEvent<bool> { }
 public class WashingMachineMgr : MonoBehaviour
 {
     //Public Values
+    public HUD_Mgr HUD_Mgr;
     public Transform Player;
     public List<PlatformScript> Platform = new List<PlatformScript>();
     public List<AutorRotateOrbit> Orbits;
@@ -22,7 +23,7 @@ public class WashingMachineMgr : MonoBehaviour
 
 
     //UI
-    public Image winLoseUI;
+    public Transform winLoseUI;
     public Sprite win;
     public Sprite lose;
 
@@ -66,6 +67,8 @@ public class WashingMachineMgr : MonoBehaviour
 
     List<Vector3> positionList = new List<Vector3>();
 
+    public static bool GameEnd { get; private set; }
+
 
 
 
@@ -79,18 +82,21 @@ public class WashingMachineMgr : MonoBehaviour
         switch (DifficultyLevel)
         {
             case Level.Easy:
-                washingMachineStopDuration = WashingMachineStopDuration;
-                gameTimeDuration = GameTimeDuration;
+                washingMachineStopDuration = 12;
+                gameTimeDuration = 300f;
+                PassTimerToHUD(gameTimeDuration, washingMachineStopDuration, true);
                 startGame = true;
                 break;
             case Level.Medium:
-                washingMachineStopDuration = WashingMachineStopDuration;
-                gameTimeDuration = GameTimeDuration;
+                washingMachineStopDuration = 8;
+                gameTimeDuration = 180f;
+                PassTimerToHUD(gameTimeDuration, washingMachineStopDuration, true);
                 startGame = true;
                 break;
             case Level.Hard:
-                washingMachineStopDuration = WashingMachineStopDuration;
-                gameTimeDuration = GameTimeDuration;
+                washingMachineStopDuration = 4;
+                gameTimeDuration = 120f;
+                PassTimerToHUD(gameTimeDuration, washingMachineStopDuration, true);
                 startGame = true;   
                 break;
         }
@@ -98,22 +104,41 @@ public class WashingMachineMgr : MonoBehaviour
 
     
 
+    public void PassTimerToHUD(float gameTimer, float stopTimer, bool passStopTimer)
+    {
+        HUD_Mgr.timeLeft = (int)gameTimer;
+
+        if(passStopTimer)
+            HUD_Mgr.timeToClose = (int)stopTimer;
+
+    }
+
     public void SubscribePlatformGravitation(UnityAction<bool> onActivatePlatform, bool b)
     {
         if (b)
-            UnityEventTools.AddPersistentListener(GPlatformsEvent, onActivatePlatform);
+            GPlatformsEvent.AddListener(onActivatePlatform);
         else
-            UnityEventTools.RemovePersistentListener(GPlatformsEvent, onActivatePlatform);
+            GPlatformsEvent.RemoveListener(onActivatePlatform);
 
     }
 
     public void SubscribeSendPosition(UnityAction<bool> onSetPlatformPos, bool b)
     {
         if (b)
-            UnityEventTools.AddPersistentListener(SendPositionEvent, onSetPlatformPos);
+            SendPositionEvent.AddListener(onSetPlatformPos);
         else
-            UnityEventTools.RemovePersistentListener(SendPositionEvent, onSetPlatformPos);
+            SendPositionEvent.RemoveListener(onSetPlatformPos);
 
+    }
+
+    public static void RemoveLife()
+    {
+        HUD_Mgr.UpdateLifes(1);
+    }
+
+    public static void OnEndGame()
+    {
+        GameEnd = true;
     }
 
     public static void StopMotion()
@@ -171,9 +196,9 @@ public class WashingMachineMgr : MonoBehaviour
             TickEndGame();
 
             //Script to End Game
-            if(EndGame())
+            if(EndGame() || GameEnd)
             {
-                Debug.Log("Scene Ended");
+                YouLose();
             }
 
             //Raise Internal Circle when searching time is over
@@ -268,7 +293,7 @@ public class WashingMachineMgr : MonoBehaviour
         lowCircle = b;
     }
 
-    void AutorotateOrbits(bool b)
+    public void AutorotateOrbits(bool b)
     {
         for (int i = 0; i < Orbits.Count; i++)
         {
@@ -302,10 +327,12 @@ public class WashingMachineMgr : MonoBehaviour
     void Tick()
     {
         washingMachineStopTimer+= Time.deltaTime;
+        PassTimerToHUD(gameTimeDuration - gameTimeTimer, washingMachineStopDuration - washingMachineStopTimer, true);
     }
     void TickEndGame()
     {
         gameTimeTimer += Time.deltaTime;
+        PassTimerToHUD(gameTimeDuration - gameTimeTimer, 0, false);
     }
     bool TimeIsOver()
     {
@@ -313,20 +340,22 @@ public class WashingMachineMgr : MonoBehaviour
     }
     public void BackToMenu()
     {
-        //LOAD MENU SCENE
+        Application.Quit();
     }
     public void YouWin()
     {
-        winLoseUI.sprite = win;
+       winLoseUI.gameObject.SetActive(true);
+       winLoseUI.GetComponentInChildren<Image>().sprite = win;
     }
     public void YouLose()
     {
-        winLoseUI.sprite = lose;
+        winLoseUI.gameObject.SetActive(true);
+        winLoseUI.GetComponentInChildren<Image>().sprite = lose;
     }
 
     bool EndGame()
     {
-        return gameTimeTimer <= gameTimeDuration;
+        return gameTimeTimer >= gameTimeDuration;
     }
 
 }

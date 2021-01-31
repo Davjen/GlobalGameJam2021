@@ -5,13 +5,22 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: d1c3109bdb54ad54c8a2b2838528e640
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/testAndreaGrav.unity
     guid: 0869fd2e01ab5904ab0dbf735b531b36
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MattiaScene.unity
     guid: 21f4e5a97adda324c8b27a416dbe99e7
+  - enabled: 0
+    path: Assets/Scenes/StageEditorScene.unity
+    guid: e39d4ef67aaf9914a9d975c0f3a5b079
+  - enabled: 1
+    path: Assets/Scenes/Game_Scene.unity
+    guid: 4f37dba25a60e0b40a08e40cd3eb8fda
+  - enabled: 1
+    path: Assets/Scenes/PlayScene.unity
+    guid: 607efe44040489342b7e9cefc46db49d
   m_configObjects: {}

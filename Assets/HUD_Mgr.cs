@@ -12,7 +12,7 @@ public class HUD_Mgr : MonoBehaviour
     private string timerToClose = "HURRY UP! ";
     private int minutes, seconds;
     public int timeLeft, timeToClose;
-    private List<Image> lifes;
+    private static List<Image> lifes;
     public HorizontalLayoutGroup lifeGroup;
 
     // Start is called before the first frame update
@@ -49,7 +49,7 @@ public class HUD_Mgr : MonoBehaviour
         minutes = timeLeft / 60;
         seconds = timeLeft - (minutes * 60);
     }
-    public void UpdateLifes(int lifesLost)
+    public static void UpdateLifes(int lifesLost)
     {
         if (lifes.Count > 0)
         {

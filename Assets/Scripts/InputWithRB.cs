@@ -128,7 +128,7 @@ public class InputWithRB : MonoBehaviour
         if (recordInput)
         {
 
-            fwd = -(Input.GetAxis("Horizontal") * speed);
+            fwd = (Input.GetAxis("Horizontal") * speed);
 
 
             if (Input.GetKeyDown(KeyCode.Space) && grounded)
@@ -147,14 +147,15 @@ public class InputWithRB : MonoBehaviour
         {
             //Vite-1
             Lifes--;
+            WashingMachineMgr.RemoveLife();
             //if vite ==0 - Gameover.
             if (Lifes==0)
             {
-                //Trigger gameover;
-                //return;
+                WashingMachineMgr.OnEndGame();
             }
            
         }
+
         float myDist = (center.position - transform.position).magnitude;
         float platformDist = 0;
         if (collision.transform.childCount != 0)

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Menu_Mgr : MonoBehaviour
@@ -38,7 +39,10 @@ public class Menu_Mgr : MonoBehaviour
     public float CountDownToMenu = 1.5f;
     private bool canProceed;
     bool STOP;
-    
+    private float beta;
+    public Image FadeOutImage;
+    private bool fadeToStartGame;
+
 
 
 
@@ -84,8 +88,8 @@ public class Menu_Mgr : MonoBehaviour
     public void StartGame()
     {
         PlayClick();
+        fadeToStartGame = true;
         StaticSavingScript.LEVEL_DIFFICULTY = level;
-        StaticSavingScript.MUSIC_TIMER_START = MusicTheme.time;
 
         //LOAD.SCENA DI GIOCO! 
         //startCameraAnim = true;
@@ -150,6 +154,22 @@ public class Menu_Mgr : MonoBehaviour
             //        canProceed = true;
             //    }
             //}
+
+            if(fadeToStartGame)
+                FadeToStartGame();
+           
+        }
+    }
+
+    public void FadeToStartGame()
+    {
+        beta += 0.5f * Time.deltaTime;
+        FadeOutImage.color = new Color(0, 0, 0, beta);
+        if (FadeOutImage.color.a >= 1)
+        {
+            StaticSavingScript.MUSIC_TIMER_START = MusicTheme.time;
+            SceneManager.LoadScene("PlayScene");
+
         }
     }
 
@@ -157,7 +177,7 @@ public class Menu_Mgr : MonoBehaviour
     {
         if ((lerpTimer / TranslateTimer >= 1) && (lerpTimer / RotationTimer >= 1)&& counterPos < TgTCameraPositions.Count &&!STOP)
         {
-            Debug.Log("c");
+            
             oldPosition = tgTPosition;
             oldRotation = tgtRotation;
             lerpTimer = 0;

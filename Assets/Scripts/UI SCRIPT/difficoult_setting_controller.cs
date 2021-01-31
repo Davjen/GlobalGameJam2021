@@ -47,7 +47,7 @@ public class difficoult_setting_controller : MonoBehaviour
     {
         if (tgtRot != setting_toggle.rotation.eulerAngles.z)
         {
-            Debug.Log("ciao");
+            
             setting_toggle.rotation = Quaternion.Lerp(setting_toggle.rotation, Quaternion.Euler(new Vector3(InitRotation.x, InitRotation.y, tgtRot)), rotSpeed * Time.deltaTime);
             currDiff = newDiff;
         }

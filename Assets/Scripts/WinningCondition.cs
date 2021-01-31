@@ -5,25 +5,15 @@ using UnityEngine;
 public class WinningCondition : MonoBehaviour
 {
     public WashingMachineMgr machineMgr;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+   
     private void OnCollisionEnter(Collision collision)
     {
         InputWithRB scr;
         if (collision.transform.TryGetComponent<InputWithRB>(out scr))
         {
-            //stop machine
-
-            //...
+            machineMgr.AutorotateOrbits(false);
+            machineMgr.YouWin();
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
