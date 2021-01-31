@@ -21,19 +21,20 @@ public class InputWithRB : MonoBehaviour
     bool grounded;
     float fwd;
     Quaternion platformRot;
-    float colliderSize;
+    //float colliderSize;
     bool floating;
     bool recordInput;
 
     private int Lifes;
     private bool repulse;
+    private bool turnLeft;
+    private bool turnRight;
 
-    // Start is called before the first frame update
     void Start()
     {
-        
+        turnRight = true;
         rb = GetComponent<Rigidbody>();
-        colliderSize = GetComponentInChildren<CapsuleCollider>().bounds.extents.z;
+        //colliderSize = GetComponentInChildren<CapsuleCollider>().bounds.extents.z;
         //Debug
         recordInput = true;
         floating = true;
@@ -44,6 +45,26 @@ public class InputWithRB : MonoBehaviour
     {
         if (recordInput)
         {
+            if (fwd > 0)
+            {
+                if (!turnLeft)
+                {
+                    turnLeft = true;
+                    turnRight = false;
+                    transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
+
+                }
+            }
+            else if(fwd<0)
+            {
+                if (!turnRight)
+                {
+                    turnLeft = false;
+                    turnRight = true;
+                    transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
+
+                }
+            }
 
 
             Vector3 dir = (center.position - transform.position).normalized;
@@ -53,11 +74,17 @@ public class InputWithRB : MonoBehaviour
                 rb.AddForce(-dir * grav, ForceMode.Acceleration);
 
                 //Add orientation
-                rb.rotation = Quaternion.LookRotation(dir);
+                rb.rotation = Quaternion.LookRotation(dir, transform.up);
             }
 
+
+
+
+           
+
+           
             //add translation
-            rb.AddForce(transform.right * fwd);
+            rb.AddForce(transform.up * fwd);
             LookCenter();
 
 
@@ -91,7 +118,7 @@ public class InputWithRB : MonoBehaviour
         if (recordInput)
         {
 
-            fwd = Input.GetAxis("Horizontal") * speed;
+            fwd = -(Input.GetAxis("Horizontal") * speed);
 
 
             if (Input.GetKeyDown(KeyCode.Space) && grounded)
@@ -126,7 +153,7 @@ public class InputWithRB : MonoBehaviour
 
         }
 
-        if ((myDist + colliderSize-0.1f <= platformDist) || collision.gameObject.tag == "WashingMachineInternal"|| collision.gameObject.tag == "WashingMachineExternal")
+        if ((myDist -0.1f <= platformDist) || collision.gameObject.tag == "WashingMachineInternal"|| collision.gameObject.tag == "WashingMachineExternal")
         {
             
             //currentScale = transform.localScale;
@@ -180,7 +207,7 @@ public class InputWithRB : MonoBehaviour
         collision.gameObject.TryGetComponent<PlatformColliderSize>(out platformSize);
 
         //N.B. useful if you don't wanna jump again when you touch a platform from edges
-        if (collision.gameObject.tag != "WashingMachineInternal" && collision.gameObject.tag != "WashingMachineExternal" && collision.transform != transform.parent && (myDist + colliderSize-0.2f >= platformDist))
+        if (collision.gameObject.tag != "WashingMachineInternal" && collision.gameObject.tag != "WashingMachineExternal" && collision.transform != transform.parent && (myDist -0.2f >= platformDist))
         {
             grounded = false;
             repulse = true;
@@ -228,7 +255,9 @@ public class InputWithRB : MonoBehaviour
 
     public void LookCenter()
     {
+        
         Vector3 dir = (center.position - transform.position).normalized;
-        platformRot = Quaternion.LookRotation(dir);
+        platformRot = Quaternion.LookRotation(dir, transform.up);
+
     }
 }
