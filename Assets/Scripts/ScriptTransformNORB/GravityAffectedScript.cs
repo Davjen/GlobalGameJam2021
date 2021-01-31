@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GravityAffectedScript : MonoBehaviour
 {
+    public static UnityAction testAction;
     public WashingMachineMgr Mgr;
     public bool GravityOn;
     public Transform OriginGForce;
-    public AudioSource audioSource;
+    //public AudioSource audioSource;
 
     float gSpeed;
     // Start is called before the first frame update
@@ -18,8 +20,10 @@ public class GravityAffectedScript : MonoBehaviour
     }
     private void Awake()
     {
-        audioSource.time = StaticSavingScript.MUSIC_TIMER_START;
-        audioSource.Play();
+        testAction += DeactivateP;
+      
+        //audioSource.time = StaticSavingScript.MUSIC_TIMER_START;
+        //audioSource.Play();
     }
 
 
@@ -35,7 +39,11 @@ public class GravityAffectedScript : MonoBehaviour
             transform.position -= direction.normalized * gSpeed * Time.deltaTime;
         }
     }
-
+    private void DeactivateP()
+    {
+        Debug.Log("ascolto");
+        enabled = false;
+    }
     public Vector3 GetDir()
     {
         Vector3 dir;
