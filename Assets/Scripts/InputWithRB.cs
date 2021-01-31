@@ -125,7 +125,7 @@ public class InputWithRB : MonoBehaviour
 
         }
 
-        if ((myDist + colliderSize <= platformDist) || collision.gameObject.tag == "WashingMachineInternal"|| collision.gameObject.tag == "WashingMachineExternal")
+        if ((myDist + colliderSize -0.1f <= platformDist) || collision.gameObject.tag == "WashingMachineInternal"|| collision.gameObject.tag == "WashingMachineExternal")
         {
             
             //currentScale = transform.localScale;
