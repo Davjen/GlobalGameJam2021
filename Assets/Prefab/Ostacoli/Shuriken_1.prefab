@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
-  movement: 2
+  movement: 0
   spawnCenter: {fileID: 0}
 --- !u!136 &4850421949562095943
 CapsuleCollider:

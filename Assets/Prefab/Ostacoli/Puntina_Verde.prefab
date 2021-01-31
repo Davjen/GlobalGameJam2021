@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7719433385784087588}
   - component: {fileID: 6669607119764626305}
   - component: {fileID: 8893416429079785291}
+  - component: {fileID: 4785363308669806883}
   m_Layer: 0
   m_Name: Puntina_Verde
   m_TagString: Untagged
@@ -81,3 +82,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &4785363308669806883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6947716597201227422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5484346ccabb0834ba717451fa209083, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
+  movement: 0
+  spawnCenter: {fileID: 0}

@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  movement: 2
+  movement: 0
   spawnCenter: {fileID: 0}
 --- !u!54 &7648029775609693002
 Rigidbody:
