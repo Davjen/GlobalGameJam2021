@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LerpFollowCameraTarget : MonoBehaviour
 {
+    public Transform target;
+    public float speed = 5;
     // Start is called before the first frame update
     void Start()
     {
@@ -11,8 +13,8 @@ public class LerpFollowCameraTarget : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        
+        transform.position = Vector3.Lerp(transform.position, target.position,speed*Time.deltaTime);
     }
 }
