@@ -166,7 +166,10 @@ public class InputWithRB : MonoBehaviour
 
         //N.B. useful if you don't wanna jump again when you touch a platform from edges
         if (collision.gameObject.tag != "WashingMachineInternal" && collision.gameObject.tag != "WashingMachineExternal" && collision.transform != transform.parent && (myDist + colliderSize - 0.1f >= platformDist))
+        {
             grounded = false;
+            gravOn = true;
+        }
         else
         {
             grounded = true;
