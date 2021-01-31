@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class difficoult_setting_controller : MonoBehaviour
 {
@@ -12,15 +13,18 @@ public class difficoult_setting_controller : MonoBehaviour
     private int currDiff = 0;
     private int newDiff = 0;
     public Menu_Mgr menu_Mgr;
+    public Vector3 InitRotation;
 
     // Start is called before the first frame update
     void Start()
     {
+        InitRotation = new Vector3(setting_toggle.rotation.x, setting_toggle.rotation.y, setting_toggle.rotation.z);
         tgtRot = diff3;
         currDiff = 1;
     }
     public void setDiff_1()
     {
+        Debug.Log("ciao");
         tgtRot = diff1;
         menu_Mgr.level = 1;
         newDiff = 1;
@@ -41,11 +45,22 @@ public class difficoult_setting_controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (tgtRot != setting_toggle.rotation.eulerAngles.x)
+        if (tgtRot != setting_toggle.rotation.eulerAngles.z)
         {
 
-            setting_toggle.rotation = Quaternion.Lerp(setting_toggle.rotation,Quaternion.Euler(tgtRot,-90,-90),rotSpeed * Time.deltaTime);
+            setting_toggle.rotation = Quaternion.Lerp(setting_toggle.rotation,Quaternion.Euler(new Vector3(InitRotation.x,InitRotation.y,rotSpeed)),rotSpeed * Time.deltaTime);
             currDiff = newDiff;
         }
     }
+    public void NextLevel()
+    {
+        currDiff++;
+        if (currDiff>3)
+        {
+
+        }
+    }
+
+
+
 }

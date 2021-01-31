@@ -24,7 +24,7 @@ public class InputWithRB : MonoBehaviour
     bool recordInput;
     Vector3 startScale;
     //Vector3 currentScale;
-
+    private int Lifes;
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +35,7 @@ public class InputWithRB : MonoBehaviour
         //Debug
         recordInput = true;
         floating = true;
+        Lifes = 3;
     }
     // Update is called once per frame
     void FixedUpdate()
@@ -102,7 +103,18 @@ public class InputWithRB : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-
+        if (collision.gameObject.tag == "DangerousObj")
+        {
+            //Vite-1
+            Lifes--;
+            //if vite ==0 - Gameover.
+            if (Lifes==0)
+            {
+                //Trigger gameover;
+                //return;
+            }
+           
+        }
         float myDist = (center.position - transform.position).magnitude;
         float platformDist = 0;
         if (collision.transform.childCount != 0)
