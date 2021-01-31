@@ -382,13 +382,13 @@ MonoBehaviour:
   - {fileID: 1843248883}
   - {fileID: 1304783894}
   - {fileID: 939442279}
-  - {fileID: 250468768}
+  lastPosition: {fileID: 250468768}
   level: 1
   MusicTheme: {fileID: 51523643}
   MouseOver: {fileID: 51523647}
   Selection: {fileID: 51523646}
-  startToFade: 1
   alphaMultiplier: 2
+  CountDownToMenu: 2.5
 --- !u!4 &51523645
 Transform:
   m_ObjectHideFlags: 0
@@ -1894,7 +1894,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 939442278}
   m_LocalRotation: {x: -0.19109344, y: -0.018583033, z: 0.0035431157, w: -0.9813896}
-  m_LocalPosition: {x: 1.9987768, y: 4.7293844, z: 2.4195542}
+  m_LocalPosition: {x: 2.007, y: 4.639, z: 2.642}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1712977081}
