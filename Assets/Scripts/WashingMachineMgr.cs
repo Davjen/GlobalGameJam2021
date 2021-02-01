@@ -26,6 +26,7 @@ public class WashingMachineMgr : MonoBehaviour
     public Transform winLoseUI;
     public Sprite win;
     public Sprite lose;
+    public Transform CloseTimerHUD;
 
     //Events
     public ActivatePlatformsEvent GPlatformsEvent;
@@ -76,6 +77,7 @@ public class WashingMachineMgr : MonoBehaviour
         InitializeGame(levelDiff);
         mainTheme.time = StaticSavingScript.MUSIC_TIMER_START;
         mainTheme.Play();
+        
     }
 
 
@@ -188,7 +190,7 @@ public class WashingMachineMgr : MonoBehaviour
         playerLastPos = Player.transform.position;
         playerRepositioning = true;
         Player.GetComponent<InputWithRB>().RecordInput(false);
-        //Player.GetComponent<InputWithRB>().gravOn=false;
+       
 
     }
 
@@ -242,6 +244,7 @@ public class WashingMachineMgr : MonoBehaviour
             //METTE IN MOTO LE PIATTAFORME
             if (StopMotionTrigger)//QUANDO IL PLAYER RAGGIUNGE IL CENTRO DELLA LAVATRICE E TRIGGERA LO STOP
             {
+                CloseTimerHUD.gameObject.SetActive(true);
                 //Let platforms fall
                 if (!platformFall)
                 {
@@ -260,6 +263,7 @@ public class WashingMachineMgr : MonoBehaviour
                 //Restarts washing machine
                 if (TimeIsOver()) 
                 {
+                    CloseTimerHUD.gameObject.SetActive(false);
                     ResetTimer();
                     //Invokes platforms repositioning
                     SendPositionEvent.Invoke(true);

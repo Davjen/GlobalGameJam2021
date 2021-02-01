@@ -8,19 +8,20 @@ public class CameraLook : MonoBehaviour
     public Transform CameraRotation;
     public float mindDist, MaxDist;
     public float Speed = 7;
-    private bool near = true;
+    private bool near = false;
 
     private float newDist;
+    private bool instaSwap;
 
     public void SwitchDistance()
     {
         if (near)
         {
-            newDist = MaxDist;
+            newDist = mindDist;
         }
         else
         {
-            newDist = mindDist;
+            newDist = MaxDist;
         }
         near = !near;
         //transform.localPosition = new Vector3(-distance, transform.localPosition.y, transform.localPosition.z);
@@ -30,18 +31,28 @@ public class CameraLook : MonoBehaviour
     {
         newDist = mindDist;
         transform.rotation = CameraRotation.rotation;
-
+        instaSwap = true;
     }
-    private void FixedUpdate()
+
+    private void Update()
     {
+        if (instaSwap)
+        {
+            instaSwap = false;
+            SwitchDistance();
+        }
         if (Input.GetKeyDown(KeyCode.E))
         {
             SwitchDistance();
         }
+    }
+    private void FixedUpdate()
+    {
+
         //Quaternion newRot = Quaternion.Euler(new Vector3(startRot.x,CameraRotation.rotation.y,CameraRotation.rotation.z));
-        transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(-transform.localPosition.x , -newDist, transform.localPosition.z),Speed*Time.deltaTime);
+        transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(-transform.localPosition.x, -newDist, transform.localPosition.z), Speed * Time.deltaTime);
         //transform.rotation = Quaternion.Lerp(transform.rotation, CameraRotation.rotation, Speed * Time.deltaTime);
 
-        
+
     }
 }

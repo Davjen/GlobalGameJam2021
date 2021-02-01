@@ -87,12 +87,11 @@ public class Menu_Mgr : MonoBehaviour
     }
     public void StartGame()
     {
+        Debug.Log("ciao");
         PlayClick();
         fadeToStartGame = true;
         StaticSavingScript.LEVEL_DIFFICULTY = level;
 
-        //LOAD.SCENA DI GIOCO! 
-        //startCameraAnim = true;
     }
 
     // Update is called once per frame
@@ -122,18 +121,7 @@ public class Menu_Mgr : MonoBehaviour
                 tgtRotation = PickRotation(counterPos);
             }
 
-            //if (canProceed && !doingAnimation)
-            //{
-            //    if (counterPos < TgTCameraPositions.Count)
-            //    {
-
-            //        Debug.LogError("canproceed");
-            //        tgTPosition = PickPositions(counterPos);
-            //        tgtRotation = PickRotation(counterPos);
-            //        doingAnimation = true;
-            //        lerpTimer = 0;
-            //    }
-            //}
+           
             if(canProceed)
             {
                 tgTPosition = lastPosition.position;
@@ -145,15 +133,7 @@ public class Menu_Mgr : MonoBehaviour
             CameraRef.position = Vector3.Slerp(oldPosition, tgTPosition, lerpTimer / TranslateTimer);
             CameraRef.rotation = Quaternion.Slerp(oldRotation, tgtRotation, lerpTimer / RotationTimer);
             NextAnimation();
-            //if (counterPos > TgTCameraPositions.Count - 1)//SI TROVA DAVANTI AL MENù
-            //{
-            //    Debug.Log("counterPos");
-            //    CountDownToMenu -= Time.deltaTime;
-            //    if (CountDownToMenu <= 0)
-            //    {
-            //        canProceed = true;
-            //    }
-            //}
+            
 
             if(fadeToStartGame)
                 FadeToStartGame();
@@ -163,7 +143,8 @@ public class Menu_Mgr : MonoBehaviour
 
     public void FadeToStartGame()
     {
-        beta += 0.5f * Time.deltaTime;
+        Debug.Log(beta);
+        beta += 1f * Time.deltaTime;
         FadeOutImage.color = new Color(0, 0, 0, beta);
         if (FadeOutImage.color.a >= 1)
         {
