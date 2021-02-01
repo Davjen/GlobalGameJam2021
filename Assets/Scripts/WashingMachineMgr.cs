@@ -19,8 +19,7 @@ public class WashingMachineMgr : MonoBehaviour
     public Transform InternalCircleLowHandler;
     public Level DifficultyLevel= Level.None;
     public float GValue;
-    public bool PLAYSOUND;
-    public AudioSource mainTheme;
+    public SoundManager SoundMgr;
 
     //UI
     public Transform winLoseUI;
@@ -75,8 +74,9 @@ public class WashingMachineMgr : MonoBehaviour
     {
         levelDiff = StaticSavingScript.LEVEL_DIFFICULTY;
         InitializeGame(levelDiff);
-        mainTheme.time = StaticSavingScript.MUSIC_TIMER_START;
-        mainTheme.Play();
+       
+        SoundMgr.StartFrom("MainTheme", StaticSavingScript.MUSIC_TIMER_START);
+
         
     }
 
@@ -109,6 +109,7 @@ public class WashingMachineMgr : MonoBehaviour
             PassTimerToHUD(gameTimeDuration, washingMachineStopDuration, true);
             startGame = true;
         }
+        #region switchR
         //alla fine di tutto
         //switch (DifficultyLevel)
         //{
@@ -131,9 +132,10 @@ public class WashingMachineMgr : MonoBehaviour
         //        startGame = true;   
         //        break;
         //}
+        #endregion
     }
 
-    
+
 
     public void PassTimerToHUD(float gameTimer, float stopTimer, bool passStopTimer)
     {
@@ -373,17 +375,25 @@ public class WashingMachineMgr : MonoBehaviour
     }
     public void BackToMenu()
     {
+        Debug.Log("ciao");
         Application.Quit();
     }
     public void YouWin()
     {
        winLoseUI.gameObject.SetActive(true);
        winLoseUI.GetComponentInChildren<Image>().sprite = win;
+       SoundMgr.StopSound("MainTheme");
+       SoundMgr.PlaySound("Lose");
     }
     public void YouLose()
     {
+
+        //Camera.main.
+
         winLoseUI.gameObject.SetActive(true);
         winLoseUI.GetComponentInChildren<Image>().sprite = lose;
+        SoundMgr.StopSound("MainTheme");
+        SoundMgr.PlaySound("Lose");
     }
 
     bool EndGame()

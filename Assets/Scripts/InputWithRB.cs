@@ -9,6 +9,7 @@ public class InputWithRB : MonoBehaviour
 {
     private Rigidbody rb;
     public Transform center;
+    public SoundManager soundManager;
     public float grav;
     public bool gravOn = true;
     public float RepulseForce = 1;
@@ -103,6 +104,7 @@ public class InputWithRB : MonoBehaviour
                 rb.AddForce(dir * jumpForce, ForceMode.Impulse);
                 jump = false;
                 anim.SetTrigger("Jump");
+                soundManager.PlaySound("Jump");
             }
 
             if (!floating)
@@ -229,10 +231,12 @@ public class InputWithRB : MonoBehaviour
             repulse = true;
             Vector3 repulseDir = (transform.position - collision.transform.position).normalized;
             rb.AddForce(repulseDir * RepulseForce, RepulseForceType);
+            LookCenter();
+
         }
         else
         {
-           
+
             grounded = true;
             LookCenter();
 
