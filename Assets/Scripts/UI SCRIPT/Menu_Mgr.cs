@@ -87,7 +87,6 @@ public class Menu_Mgr : MonoBehaviour
     }
     public void StartGame()
     {
-        Debug.Log("ciao");
         PlayClick();
         fadeToStartGame = true;
         StaticSavingScript.LEVEL_DIFFICULTY = level;
@@ -149,7 +148,7 @@ public class Menu_Mgr : MonoBehaviour
     public void FadeToStartGame()
     {
         
-        beta += 1f * Time.deltaTime;
+        beta += 1 * Time.deltaTime;
         FadeOutImage.color = new Color(FadeOutImage.color.r, FadeOutImage.color.g, FadeOutImage.color.b, beta);
         if (FadeOutImage.color.a >= 1)
         {
