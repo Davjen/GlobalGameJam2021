@@ -115,8 +115,6 @@ public class InputWithRB : MonoBehaviour
 
         }
 
-        //add jump force
-
 
 
     }
@@ -137,8 +135,6 @@ public class InputWithRB : MonoBehaviour
                 jump = true;
 
         }
-
-        //Allining with platform
 
 
     }
@@ -166,7 +162,7 @@ public class InputWithRB : MonoBehaviour
 
         }
 
-        if ((myDist -0.1f <= platformDist) || collision.gameObject.tag == "WashingMachineInternal"|| collision.gameObject.tag == "WashingMachineExternal")
+        if ((myDist -0.2f <= platformDist) || collision.gameObject.tag == "WashingMachineInternal"|| collision.gameObject.tag == "WashingMachineExternal")
         {
 
             //anim.SetTrigger("EndJump");
@@ -204,9 +200,7 @@ public class InputWithRB : MonoBehaviour
             platformRot = Quaternion.LookRotation(other.transform.forward);
         }
         else
-        {
               WashingMachineMgr.StopMotion();
-        }
 
     }
 
@@ -221,8 +215,7 @@ public class InputWithRB : MonoBehaviour
 
         }
 
-        PlatformColliderSize platformSize;
-        collision.gameObject.TryGetComponent<PlatformColliderSize>(out platformSize);
+       
 
         //N.B. useful if you don't wanna jump again when you touch a platform from edges
         if (collision.gameObject.tag != "WashingMachineInternal" && collision.gameObject.tag != "WashingMachineExternal" && collision.transform != transform.parent && (myDist -0.2f >= platformDist))
@@ -239,9 +232,6 @@ public class InputWithRB : MonoBehaviour
 
             grounded = true;
             LookCenter();
-
-            //if (collision.gameObject.tag == "WashingMachine")
-            //transform.localScale = currentScale;
         }
 
 
