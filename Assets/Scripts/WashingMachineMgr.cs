@@ -104,7 +104,7 @@ public class WashingMachineMgr : MonoBehaviour
         }
         if(value==3)
         {
-            washingMachineStopDuration = 4;
+            washingMachineStopDuration = 6;
             gameTimeDuration = 120f;
             PassTimerToHUD(gameTimeDuration, washingMachineStopDuration, true);
             startGame = true;
@@ -379,14 +379,14 @@ public class WashingMachineMgr : MonoBehaviour
     }
     public void BackToMenu()
     {
-        //Debug.Log("ciao");
-        Application.Quit();
+        
+        SceneManager.LoadScene("Game_Scene");
     }
     public void YouWin()
     {
-        CloseTimerHUD.gameObject.SetActive(false);
        winLoseUI.gameObject.SetActive(true);
        winLoseUI.GetComponentInChildren<Image>().sprite = win;
+        CloseTimerHUD.gameObject.SetActive(false);
        SoundMgr.StopSound("MainTheme");
        SoundMgr.PlaySound("Win");
     }
@@ -394,9 +394,9 @@ public class WashingMachineMgr : MonoBehaviour
     {
 
         //Camera.main.
-
         winLoseUI.gameObject.SetActive(true);
         winLoseUI.GetComponentInChildren<Image>().sprite = lose;
+        CloseTimerHUD.gameObject.SetActive(false);
         SoundMgr.StopSound("MainTheme");
         SoundMgr.PlaySound("Lose");
     }
