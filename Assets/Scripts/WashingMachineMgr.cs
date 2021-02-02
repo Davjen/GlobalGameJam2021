@@ -216,6 +216,10 @@ public class WashingMachineMgr : MonoBehaviour
 
     void Update()
     {
+        if(Input.GetKey(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
         InitializeGame(levelDiff);
              
         if (startGame)
@@ -375,15 +379,16 @@ public class WashingMachineMgr : MonoBehaviour
     }
     public void BackToMenu()
     {
-        Debug.Log("ciao");
+        //Debug.Log("ciao");
         Application.Quit();
     }
     public void YouWin()
     {
+        CloseTimerHUD.gameObject.SetActive(false);
        winLoseUI.gameObject.SetActive(true);
        winLoseUI.GetComponentInChildren<Image>().sprite = win;
        SoundMgr.StopSound("MainTheme");
-       SoundMgr.PlaySound("Lose");
+       SoundMgr.PlaySound("Win");
     }
     public void YouLose()
     {

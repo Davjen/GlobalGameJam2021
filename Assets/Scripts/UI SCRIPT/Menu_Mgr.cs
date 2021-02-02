@@ -97,6 +97,11 @@ public class Menu_Mgr : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKey(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
         if (startToFade)
         {
             alpha -= alphaMultiplier * Time.deltaTime;
@@ -143,9 +148,9 @@ public class Menu_Mgr : MonoBehaviour
 
     public void FadeToStartGame()
     {
-        Debug.Log(beta);
+        
         beta += 1f * Time.deltaTime;
-        FadeOutImage.color = new Color(0, 0, 0, beta);
+        FadeOutImage.color = new Color(FadeOutImage.color.r, FadeOutImage.color.g, FadeOutImage.color.b, beta);
         if (FadeOutImage.color.a >= 1)
         {
             StaticSavingScript.MUSIC_TIMER_START = MusicTheme.time;
