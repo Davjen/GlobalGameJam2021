@@ -1259,7 +1259,7 @@ MonoBehaviour:
   onAngle: 137.174
   offAngle: -39.233
   button: {fileID: 1558071050}
-  initAngle: {x: 0, y: 0, z: 0}
+  initAngle: {x: 26.336, y: 0, z: 0}
   Menu: {fileID: 51523644}
 --- !u!1 &200522453
 GameObject:
@@ -3072,7 +3072,7 @@ MonoBehaviour:
   diff3: -57.098
   setting_toggle: {fileID: 1109834362}
   menu_Mgr: {fileID: 51523644}
-  InitRotation: {x: 0, y: 0, z: 0}
+  InitRotation: {x: 25.619, y: 0, z: -57.098}
 --- !u!1 &1211943672
 GameObject:
   m_ObjectHideFlags: 0

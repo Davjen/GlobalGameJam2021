@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -117,32 +118,38 @@ public class Menu_Mgr : MonoBehaviour
         }
         if (startCameraAnim)
         {
+            CameraAnimation();
 
-            if (!doingAnimation && counterPos < TgTCameraPositions.Count)
-            {
-                doingAnimation = true;
-                tgTPosition = PickPositions(counterPos);
-                tgtRotation = PickRotation(counterPos);
-            }
+        //    if (!doingAnimation && counterPos < TgTCameraPositions.Count)
+        //    {
+        //        doingAnimation = true;
+        //        tgTPosition = PickPositions(counterPos);
+        //        tgtRotation = PickRotation(counterPos);
+        //    }
 
            
-            if(canProceed)
-            {
-                tgTPosition = lastPosition.position;
-                tgtRotation = lastPosition.rotation;
-                STOP = true;
-            }
+        //    if(canProceed)
+        //    {
+        //        tgTPosition = lastPosition.position;
+        //        tgtRotation = lastPosition.rotation;
+        //        STOP = true;
+        //    }
 
-            lerpTimer += Time.deltaTime;
-            CameraRef.position = Vector3.Slerp(oldPosition, tgTPosition, lerpTimer / TranslateTimer);
-            CameraRef.rotation = Quaternion.Slerp(oldRotation, tgtRotation, lerpTimer / RotationTimer);
-            NextAnimation();
+        //    lerpTimer += Time.deltaTime;
+        //    CameraRef.position = Vector3.Slerp(oldPosition, tgTPosition, lerpTimer / TranslateTimer);
+        //    CameraRef.rotation = Quaternion.Slerp(oldRotation, tgtRotation, lerpTimer / RotationTimer);
+        //    NextAnimation();
             
 
-            if(fadeToStartGame)
-                FadeToStartGame();
+        //    if(fadeToStartGame)
+        //        FadeToStartGame();
            
-        }
+        //}
+    }
+
+    private void CameraAnimation()
+    {
+        throw new NotImplementedException();
     }
 
     public void FadeToStartGame()

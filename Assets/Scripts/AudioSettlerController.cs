@@ -15,7 +15,7 @@ public class AudioSettlerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        initAngle = new Vector3(button.rotation.x, button.rotation.y, button.rotation.z);
+        //initAngle = new Vector3(button.rotation.x, button.rotation.y, button.rotation.z);
         angleTgt = onAngle;
     }
     public void SwitchAudio()

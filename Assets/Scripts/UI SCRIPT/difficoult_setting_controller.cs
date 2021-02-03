@@ -18,7 +18,7 @@ public class difficoult_setting_controller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InitRotation = new Vector3(setting_toggle.rotation.x, setting_toggle.rotation.y, setting_toggle.rotation.z);
+        //InitRotation = new Vector3(transform.localRotation.x, transform.localRotation.y, transform.localRotation.z);
         tgtRot = diff3;
         currDiff = 1;
         setDiff_1();
@@ -45,10 +45,10 @@ public class difficoult_setting_controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (tgtRot != setting_toggle.rotation.eulerAngles.z)
+        if (tgtRot != transform.localRotation.eulerAngles.z)
         {
             
-            setting_toggle.rotation = Quaternion.Lerp(setting_toggle.rotation, Quaternion.Euler(new Vector3(InitRotation.x, InitRotation.y, tgtRot)), rotSpeed * Time.deltaTime);
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(new Vector3(InitRotation.x, InitRotation.y, tgtRot)), rotSpeed * Time.deltaTime);
             currDiff = newDiff;
         }
     }
