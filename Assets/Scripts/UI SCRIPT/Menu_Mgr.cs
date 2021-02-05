@@ -38,11 +38,12 @@ public class Menu_Mgr : MonoBehaviour
     float alpha;
     public float alphaMultiplier = 2;
     public float CountDownToMenu = 1.5f;
-    private bool canProceed;
-    bool STOP;
     private float beta;
     public Image FadeOutImage;
     private bool fadeToStartGame;
+
+    private int moveToPos = 0;
+    private bool automaticAnimation = true;
 
 
 
@@ -101,6 +102,14 @@ public class Menu_Mgr : MonoBehaviour
         {
             Application.Quit();
         }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            GoToInfo();
+        }
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            GoToMainMenu();
+        }
 
         if (startToFade)
         {
@@ -110,7 +119,7 @@ public class Menu_Mgr : MonoBehaviour
             if (startMenu.color.a <= 0)
             {
 
-
+                lerpTimer = 0;
                 startCameraAnim = true;
                 Menu.enabled = false;
                 startToFade = false;
@@ -118,34 +127,49 @@ public class Menu_Mgr : MonoBehaviour
         }
         if (startCameraAnim)
         {
+            MoveCamera();
 
-            if (!doingAnimation && counterPos < TgTCameraPositions.Count)
-            {
-                doingAnimation = true;
-                tgTPosition = PickPositions(counterPos);
-                tgtRotation = PickRotation(counterPos);
-            }
-
-         
-            if(canProceed)
-            {
-                tgTPosition = lastPosition.position;
-                tgtRotation = lastPosition.rotation;
-                STOP = true;
-            }
-
-            lerpTimer += Time.deltaTime;
-            CameraRef.position = Vector3.Slerp(oldPosition, tgTPosition, lerpTimer / TranslateTimer);
-            CameraRef.rotation = Quaternion.Slerp(oldRotation, tgtRotation, lerpTimer / RotationTimer);
-            NextAnimation();
-          
-
-            if(fadeToStartGame)
-                FadeToStartGame();
-           
         }
-    }
 
+    }
+    public void GoToInfo()
+    {
+        startCameraAnim = true;
+        moveToPos = TgTCameraPositions.Count - 2;
+        lerpTimer = 0;
+    }
+    public void GoToMainMenu()
+    {
+        startCameraAnim = true;
+        moveToPos = TgTCameraPositions.Count - 1;
+        lerpTimer = 0;
+    }
+    private void MoveCamera()
+    {
+        if (!(Vector3.Distance(CameraRef.position,TgTCameraPositions[moveToPos].position) < 0.01) || !(Quaternion.Angle(CameraRef.rotation,TgTCameraPositions[moveToPos].rotation)==0))
+        {
+            lerpTimer += Time.deltaTime;
+
+            CameraRef.position = Vector3.Lerp(CameraRef.position, TgTCameraPositions[moveToPos].position,lerpTimer/TranslateTimer);
+            CameraRef.rotation = Quaternion.Slerp(CameraRef.rotation, TgTCameraPositions[moveToPos].rotation, lerpTimer/RotationTimer);
+        }
+        else
+        {
+            lerpTimer = 0;
+            if (automaticAnimation)
+            {
+                moveToPos++;
+            }
+            if (moveToPos >= TgTCameraPositions.Count)
+            {
+                Debug.Log(moveToPos);
+                moveToPos = TgTCameraPositions.Count - 1;
+                startCameraAnim = false;
+                automaticAnimation = false;
+            }
+        }
+
+    }
 
     public void FadeToStartGame()
     {
@@ -158,36 +182,6 @@ public class Menu_Mgr : MonoBehaviour
             SceneManager.LoadScene("PlayScene");
 
         }
-    }
-
-    private void NextAnimation()
-    {
-        if ((lerpTimer / TranslateTimer >= 1) && (lerpTimer / RotationTimer >= 1)&& counterPos < TgTCameraPositions.Count &&!STOP)
-        {
-            
-            oldPosition = tgTPosition;
-            oldRotation = tgtRotation;
-            lerpTimer = 0;
-            counterPos++;
-            doingAnimation = false;
-        }
-        if(((lerpTimer / TranslateTimer >= 1) && (lerpTimer / RotationTimer >= 1) && counterPos == TgTCameraPositions.Count)&&!STOP)
-        {
-            canProceed = true;
-            lerpTimer = 0;
-        }
-
-       
-    }
-
-    Vector3 PickPositions(int index)
-    {
-
-        return TgTCameraPositions[index].position;
-    }
-    Quaternion PickRotation(int index)
-    {
-        return TgTCameraPositions[index].rotation;
     }
 
     public void StartAnimation()
