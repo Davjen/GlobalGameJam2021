@@ -24,9 +24,9 @@ public class tryGrav : MonoBehaviour
             rb.AddForce(-dir * grav, ForceMode.Acceleration);
         }
         float x = Input.GetAxis("Horizontal");
-        rb.AddForce(transform.right * x * speed);
 
-        transform.rotation = Quaternion.LookRotation(dir);
+        rb.rotation = Quaternion.LookRotation(dir);
+        rb.AddForce(transform.right * x * speed);
 
         if (Input.GetKeyDown(KeyCode.Space))
         {

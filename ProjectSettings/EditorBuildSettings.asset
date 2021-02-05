@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MattiaScene.unity
     guid: 21f4e5a97adda324c8b27a416dbe99e7
   - enabled: 0
-    path: Assets/Scenes/StageEditorScene.unity
+    path: Assets/Scenes/ScenediTest/StageEditorScene.unity
     guid: e39d4ef67aaf9914a9d975c0f3a5b079
   - enabled: 1
     path: Assets/Scenes/Game_Scene.unity
