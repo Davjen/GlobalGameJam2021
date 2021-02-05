@@ -373,7 +373,7 @@ MonoBehaviour:
   startCameraAnim: 0
   CameraRef: {fileID: 2066189890}
   speed: 5
-  TranslateTimer: 12
+  TranslateTimer: 14
   RotationTimer: 5
   Menu: {fileID: 1678955490}
   startMenu: {fileID: 363174506}

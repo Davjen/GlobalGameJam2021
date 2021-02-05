@@ -110,6 +110,10 @@ public class Menu_Mgr : MonoBehaviour
         {
             GoToMainMenu();
         }
+        if (fadeToStartGame)
+        {
+            FadeToStartGame();
+        }
 
         if (startToFade)
         {
