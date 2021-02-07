@@ -98,7 +98,7 @@ public class Menu_Mgr : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.Escape))
+        if (Input.GetKey(KeyCode.Escape))
         {
             Application.Quit();
         }
@@ -150,26 +150,56 @@ public class Menu_Mgr : MonoBehaviour
     }
     private void MoveCamera()
     {
-        if (!(Vector3.Distance(CameraRef.position,TgTCameraPositions[moveToPos].position) < 0.01) || !(Quaternion.Angle(CameraRef.rotation,TgTCameraPositions[moveToPos].rotation)==0))
+        if (automaticAnimation)
         {
-            lerpTimer += Time.deltaTime;
+            Vector3 tgtStartPosition = TgTCameraPositions[0].position;
+            Quaternion tgtStartRotation = TgTCameraPositions[0].rotation;
+            if (moveToPos > 0)
+            {
+                tgtStartPosition = TgTCameraPositions[moveToPos].position;
+                tgtStartRotation = TgTCameraPositions[moveToPos].rotation;
+            }
 
-            CameraRef.position = Vector3.Lerp(CameraRef.position, TgTCameraPositions[moveToPos].position,lerpTimer/TranslateTimer);
-            CameraRef.rotation = Quaternion.Slerp(CameraRef.rotation, TgTCameraPositions[moveToPos].rotation, lerpTimer/RotationTimer);
+            if (lerpTimer / TranslateTimer < 1 && lerpTimer / RotationTimer < 1)
+            {
+                
+                lerpTimer += Time.deltaTime;
+                CameraRef.position = Vector3.Lerp(tgtStartPosition, TgTCameraPositions[moveToPos+1].position, lerpTimer / TranslateTimer);
+                CameraRef.rotation = Quaternion.Slerp(tgtStartRotation, TgTCameraPositions[moveToPos+1].rotation, lerpTimer / RotationTimer);
+            }
+            else
+            {
+                moveToPos++;
+                lerpTimer = 0;
+                if(moveToPos>= TgTCameraPositions.Count-2)
+                {
+                    moveToPos = TgTCameraPositions.Count - 1;
+                    automaticAnimation = false;
+                    return;
+                }
+
+            }
         }
         else
         {
-            lerpTimer = 0;
-            if (automaticAnimation)
+            if (!(Vector3.Distance(CameraRef.position, TgTCameraPositions[moveToPos].position) < 0.1f) || !(Quaternion.Angle(CameraRef.rotation, TgTCameraPositions[moveToPos].rotation) == 0))
             {
-                moveToPos++;
+
+
+                CameraRef.position = Vector3.Lerp(CameraRef.position, TgTCameraPositions[moveToPos].position, speed * Time.deltaTime);
+                CameraRef.rotation = Quaternion.Slerp(CameraRef.rotation, TgTCameraPositions[moveToPos].rotation, speed * Time.deltaTime);
             }
-            if (moveToPos >= TgTCameraPositions.Count)
+            else
             {
-                Debug.Log(moveToPos);
-                moveToPos = TgTCameraPositions.Count - 1;
-                startCameraAnim = false;
-                automaticAnimation = false;
+                //lerpTimer = 0;
+
+                if (moveToPos >= TgTCameraPositions.Count)
+                {
+
+                    moveToPos = TgTCameraPositions.Count - 1;
+                    startCameraAnim = false;
+                    automaticAnimation = false;
+                }
             }
         }
 
@@ -177,7 +207,7 @@ public class Menu_Mgr : MonoBehaviour
 
     public void FadeToStartGame()
     {
-        
+
         beta += 1 * Time.deltaTime;
         FadeOutImage.color = new Color(FadeOutImage.color.r, FadeOutImage.color.g, FadeOutImage.color.b, beta);
         if (FadeOutImage.color.a >= 1)
